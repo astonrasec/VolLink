@@ -1,0 +1,73 @@
+site_name: VolLink
+site_description: Plataforma de Gestão de Voluntariado
+site_author: Diogo Almeida
+docs_dir: src
+site_dir: site
+
+theme:
+  name: material
+  language: pt
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: Mudar para modo escuro
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Mudar para modo claro
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - toc.follow
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+
+nav:
+  - Início: index.md
+  - Produto:
+      - Visão geral: funcionalidades.md
+      - Funcionalidades Web: funcionalidades-web.md
+      - Funcionalidades Android: funcionalidades-android.md
+      - Requisitos: requisitos.md
+      - User Stories: user-stories.md
+      - Mockups: mockups.md
+  - Técnico:
+      - Instalação: instalacao.md
+      - Arquitetura: arquitetura.md
+      - Base de dados: base-de-dados.md
+      - Permissões: permissoes.md
+      - Desenvolvimento: desenvolvimento.md
+  - Roadmap: roadmap.md
+
+extra_css:
+  - assets/stylesheets/mockups.css
+
+extra:
+  generator: false
