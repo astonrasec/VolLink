@@ -156,10 +156,14 @@ Referência visual do MVP do VolLink: **Modelo A** (a empresa organiza, o volunt
     <img src="../assets/mockups/android/notificacoes.png" alt="Notificações Android" loading="lazy">
     <figcaption><strong>AN-08</strong> — Notificações</figcaption>
   </figure>
+  <figure>
+    <img src="../assets/mockups/android/configuracoes-servidor.png" alt="Configuração do servidor Android" loading="lazy">
+    <figcaption><strong>AN-09</strong> — Configuração do servidor</figcaption>
+  </figure>
 </div>
 
-!!! note "Android — por criar"
-    O ecrã **AN-09 Configuração do servidor** ainda não tem imagem. É o menu exigido pelo AMSI para configurar o URL da API, testar a ligação, guardar em SharedPreferences e limpar a cache SQLite.
+!!! info "AN-09 — Configuração do servidor"
+    Menu técnico exigido pelo AMSI: define o URL da API, testa a ligação, guarda em `SharedPreferences` e limpa a cache SQLite local.
 
 ## Ver também
 
