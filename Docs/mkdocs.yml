@@ -69,5 +69,8 @@ nav:
 extra_css:
   - assets/stylesheets/mockups.css
 
+extra_javascript:
+  - assets/javascripts/mockups.js
+
 extra:
   generator: false
