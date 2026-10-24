@@ -150,6 +150,8 @@ cd Docs
 mkdocs serve -a 127.0.0.1:8001
 ```
 
+Abre <http://127.0.0.1:8001/VolLink/> (o `site_url` usa o prefixo `/VolLink/`).
+
 O resultado do build fica em `Docs/site/` (não versionado).
 
 O deploy é automático: cada push para `main` que altere `Docs/` reconstrói e publica o site através do workflow `.github/workflows/docs.yml`. Também pode ser executado manualmente em **Actions → Docs → Run workflow**.

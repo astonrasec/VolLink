@@ -351,7 +351,9 @@ python -m pip install -r requirements.txt
 python -m mkdocs serve -a 127.0.0.1:8001
 ```
 
-Abre <http://127.0.0.1:8001>. Para gerar o site estático, na pasta `Docs`:
+Abre <http://127.0.0.1:8001/VolLink/>. O `site_url` do `mkdocs.yml` é `https://astonrasec.github.io/VolLink/`, por isso o servidor local usa o prefixo `/VolLink/`.
+
+Para gerar o site estático, na pasta `Docs`:
 
 ```powershell
 .\.venv\Scripts\python -m mkdocs build
