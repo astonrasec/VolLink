@@ -6,24 +6,6 @@ Guia para colocar o VolLink a correr em **Windows** ou **Linux** e ficar com o a
     - **Rápido (recomendado):** servidor embutido do PHP. Não precisas de Apache.
     - **Apache:** configuração com `/vollink` e `/vollink-admin`, mais próxima de produção.
 
-## 0. Antes de começar
-
-- **Acesso ao repositório:** o `astonrasec/VolLink` é privado. Confirma que já consegues abrir o repositório no GitHub antes de continuar.
-- **Git**, **PHP 8.2+**, **Composer 2** e **MySQL/MariaDB**.
-- **Python 3.9+** apenas se fores editar a documentação.
-
-!!! tip "Autenticação no GitHub"
-    No Linux, o `git clone` por HTTPS pede um **Personal Access Token** (scope `repo`) no lugar da palavra-passe. Em alternativa, configura uma chave SSH.
-
-!!! note "Branch de trabalho"
-    O trabalho atual está em `feat/mvp-foundation` até o PR ser merged. Se depois do clone não vires `Docs/src` nem as migrações novas, muda para essa branch:
-
-    ```bash
-    git switch feat/mvp-foundation
-    ```
-
-    Depois do merge, usa `main`.
-
 ## 1. Obter o código
 
 === "Windows"
@@ -39,6 +21,15 @@ Guia para colocar o VolLink a correr em **Windows** ou **Linux** e ficar com o a
     git clone https://github.com/astonrasec/VolLink.git
     cd VolLink
     ```
+
+!!! note "Branch de trabalho"
+    O trabalho atual está em `feat/mvp-foundation` até o PR ser merged. Se depois do clone não vires `Docs/src` nem as migrações novas, muda para essa branch:
+
+    ```bash
+    git switch feat/mvp-foundation
+    ```
+
+    Depois do merge, usa `main`.
 
 ## 2. Instalar as ferramentas
 
