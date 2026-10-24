@@ -174,7 +174,7 @@ Presença num turno, com as horas realizadas.
 O índice `uq-attendance-application-shift (application_id, shift_id)` impede registos duplicados. O `shift_id` da presença deve ser o mesmo da candidatura (`application.shift_id`).
 
 !!! info "Quem regista as horas"
-    No MVP, é o **coordenador** que regista `hours_worked` e confirma a presença. Não há check-in/check-out nem colunas `check_in_at`/`check_out_at`.
+    No MVP, é o **coordenador** que regista `hours_worked` e confirma a presença.
 
 ### `notification`
 

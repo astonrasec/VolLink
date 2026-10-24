@@ -184,7 +184,7 @@ Páginas principais:
 
 > **RBAC:** só a empresa cria e gere eventos; o voluntário participa. Executar `php yii rbac/init` para sincronizar a base de dados.
 
-Consultar o [roadmap](Docs/src/roadmap.md) para os próximos passos e o âmbito da fase 2.
+Consultar o [roadmap](Docs/src/roadmap.md) para os próximos passos.
 
 ## Autor
 

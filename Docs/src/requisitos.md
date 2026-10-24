@@ -5,7 +5,7 @@ Esta página é a **fonte de verdade** dos requisitos do MVP. O Word e o site us
 **Legenda:** `Alta` = necessário para o MVP; `Média` = importante, mas pode entrar depois do núcleo; `Baixa` = melhoria.
 
 !!! note "Âmbito"
-    O MVP cobre autenticação, perfil, eventos/turnos, candidaturas, presenças/horas, notificações, relatório simples, back-office e app Android de voluntário. O que não está aqui está **fora do âmbito** — ver [Roadmap](roadmap.md).
+    O MVP cobre autenticação, perfil, eventos/turnos, candidaturas, presenças/horas, notificações, relatório simples, back-office e app Android de voluntário.
 
 ## Requisitos funcionais — Web Front-Office
 

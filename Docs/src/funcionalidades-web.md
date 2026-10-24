@@ -5,9 +5,6 @@ O website do VolLink tem duas áreas:
 - **Front-office** — visitantes, voluntários, empresas e coordenadores de evento.
 - **Back-office** — apenas o `sysAdmin`.
 
-!!! note "Âmbito"
-    Esta página descreve o **MVP**. As funcionalidades de avaliações, denúncias, eventos guardados, categorias geríveis, exportações CSV, histórico administrativo e check-in/check-out estão **fora do âmbito** — ver [Roadmap](roadmap.md).
-
 ## Roles
 
 | Role | Onde atua | O que pode fazer |
@@ -137,7 +134,7 @@ stateDiagram-v2
 
 - O coordenador só pode registar presenças nos eventos que criou.
 - O coordenador pode corrigir as horas antes ou depois da confirmação.
-- **Não há check-in/check-out** no MVP; as horas são registadas pelo coordenador.
+- As horas são registadas pelo coordenador.
 
 ## 6. Relatório do evento
 
@@ -149,7 +146,6 @@ stateDiagram-v2
   - presenças confirmadas;
   - total de horas.
 - Pode filtrar por evento e por período.
-- **Sem exportação CSV** no MVP; os dados são apresentados no ecrã.
 
 ## 7. Notificações
 

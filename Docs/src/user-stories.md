@@ -138,7 +138,6 @@ Como Coordenador (empresa), quero consultar um resumo da participação e das ho
 - O relatório considera apenas os eventos criados pelo coordenador.
 - Apresenta o número de candidaturas, aprovações, presenças e horas confirmadas.
 - Pode ser filtrado por evento e por período.
-- Não inclui exportação CSV no MVP.
 
 **Requisitos:** `RF-FO-21`
 
@@ -215,7 +214,6 @@ Como Sys Admin, quero moderar eventos publicados para garantir o cumprimento das
 - Consultar a lista de eventos publicados.
 - Cancelar ou arquivar qualquer evento que viole as regras.
 - Notificar o criador da decisão.
-- A moderação não depende de denúncias (fora do âmbito do MVP).
 
 **Requisitos:** `RF-BO-02`
 
