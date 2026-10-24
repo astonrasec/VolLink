@@ -28,10 +28,6 @@ A aplicação Android do VolLink é **exclusivamente para voluntários**. Consom
 | Confirmar presenças/horas | ❌ |
 | Back-office | ❌ |
 | Empresa/coordenador | ❌ |
-| Avaliações, denúncias, eventos guardados | ❌ |
-| Upload de fotografia | ❌ |
-| Notificações push | ❌ (fase 2) |
-| iOS | ❌ |
 
 ## Requisitos técnicos do AMSI
 

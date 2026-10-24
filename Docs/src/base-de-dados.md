@@ -114,8 +114,8 @@ Evento de voluntariado.
 !!! note "`RESTRICT` no criador"
     Não é possível apagar um utilizador que tenha criado eventos. Os eventos têm de ser removidos ou transferidos primeiro.
 
-!!! info "Modelo A"
-    No Modelo A, `event.creator_id` aponta sempre para um utilizador com `user_details.account_type = COMPANY`. O voluntário não cria eventos.
+!!! info "Quem cria eventos"
+    `event.creator_id` aponta sempre para um utilizador com `user_details.account_type = COMPANY`. O voluntário não cria eventos.
 
 ### `shift`
 
@@ -150,7 +150,7 @@ Candidatura de um voluntário a um **turno**.
 | `created_at` | INT | |
 | `updated_at` | INT | |
 
-O índice `uq-application-user-shift (user_id, shift_id)` impede candidaturas duplicadas ao mesmo turno. O índice antigo `uq-application-user-event` foi removido: o voluntário pode candidatar-se a mais do que um turno do mesmo evento.
+O índice `uq-application-user-shift (user_id, shift_id)` impede candidaturas duplicadas ao mesmo turno. O voluntário pode candidatar-se a mais do que um turno do mesmo evento.
 
 !!! info "Candidatura ao turno"
     A candidatura é **ao turno**; o `event_id` é mantido para consultas e relatórios. O modelo deve garantir que `shift.event_id = application.event_id`.
@@ -225,7 +225,7 @@ Histórico das migrações aplicadas, gerido pelo Yii2.
 | `fk-notification-user_id` | `notification` | `user_id` | `user.id` | CASCADE |
 | `fk-notification-event_id` | `notification` | `event_id` | `event.id` | SET NULL |
 
-## Colunas do núcleo (Modelo A)
+## Colunas do núcleo
 
 A migração `m261024_130000_add_core_columns` acrescenta as seis colunas do MVP:
 
@@ -248,26 +248,9 @@ A migração `m261024_160000_add_ui_columns` acrescenta:
 | `user_details.suspension_reason` | Motivo da suspensão |
 | `notification.read_at` | Estado lido/não lido (`NULL` = não lida) |
 
-## Fase 2 (fora do âmbito)
-
-Tabelas e colunas que existiam na versão inicial e ficam para fase 2:
-
-| Objeto | Objetivo |
-|---|---|
-| `saved_event` | Eventos guardados/favoritos por um voluntário |
-| `event_review` | Avaliações e reputação |
-| `report` | Denúncias de eventos, utilizadores ou conteúdos |
-| `category` | Categorias geríveis pelo SysAdmin |
-| `admin_log` | Registo de ações administrativas |
-| `attendance.check_in_at` / `check_out_at` | Check-in/check-out na app |
-| `user_details.photo`, `biography` | Perfil alargado do voluntário (a localização já existe para empresas) |
-| `user_details.reputation` | Reputação do organizador |
-| `user_details.failed_login_attempts`, `locked_until` | Bloqueio após tentativas falhadas |
-| `user_details.notify_new_events` | Preferência de notificações de novos eventos |
-
 ## Migrações
 
 - **11 migrações do projeto** (8 anteriores + `add_core_columns` + `application_shift_level` + `add_ui_columns`).
 - **4 migrações do RBAC** (`@yii/rbac/migrations`).
 - **16 registos** na tabela `migration`: 11 do projeto + 4 do RBAC + `m000000_000000_base` (marcador do Yii).
-- As colunas do Modelo A, a **candidatura por turno** e as **colunas de UI** já estão aplicadas; as migrações foram testadas com `up` e `down`.
+- As colunas do núcleo, a **candidatura por turno** e as **colunas de UI** já estão aplicadas; as migrações foram testadas com `up` e `down`.

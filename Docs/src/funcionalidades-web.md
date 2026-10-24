@@ -48,9 +48,6 @@ O website do VolLink tem duas áreas:
 - Consultar histórico de participações e total de horas confirmadas.
 - O voluntário vê apenas o seu próprio histórico.
 
-!!! info "Fora do âmbito"
-    Fotografia, biografia e localização ficam para fase 2. O perfil do MVP não tem upload de imagens.
-
 ## 3. Eventos e turnos
 
 **Requisitos:** RF-FO-02, RF-FO-03, RF-FO-04, RF-FO-08, RF-FO-09, RF-FO-10, RF-FO-11.
@@ -168,9 +165,6 @@ stateDiagram-v2
 | `EVENT_CANCELLED` | O evento é cancelado |
 | `EVENT_REMINDER` | 24 horas antes do turno |
 
-!!! info "Sem push no MVP"
-    As notificações push e a preferência de "novos eventos" ficam para fase 2. O voluntário vê as notificações na app Android e no website.
-
 ## 8. Perfil público da empresa
 
 **Requisitos:** RF-FO-23, RF-FO-24.
@@ -210,7 +204,7 @@ stateDiagram-v2
 | Empresas | Validar ou rejeitar contas, com motivo | `userModerate` |
 
 !!! info "Permissões reservadas"
-    `contentModerate` e `systemManage` existem no RBAC atual, mas não têm entidade/serviço no MVP. Ficam reservadas para fase 2. O `accessMobile` é usado apenas pelo voluntário na app Android.
+    `contentModerate` e `systemManage` existem no RBAC, mas não são usadas por nenhum controlador. O `accessMobile` é usado apenas pelo voluntário na app Android.
 
 ## Estado de implementação
 

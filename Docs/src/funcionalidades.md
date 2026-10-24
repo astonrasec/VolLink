@@ -28,8 +28,6 @@ O VolLink tem duas interfaces com âmbitos diferentes:
 | Notificações in-app | ✅ | ✅ |
 | Email transacional | ✅ | — |
 | Back-office (utilizadores, empresas, moderação) | ✅ | ❌ |
-| Avaliações, denúncias, eventos guardados | ❌ (fase 2) | ❌ (fase 2) |
-| Check-in/check-out | ❌ (fase 2) | ❌ (fase 2) |
 
 ## Roles
 
@@ -66,18 +64,5 @@ O VolLink tem duas interfaces com âmbitos diferentes:
 6. **Perfil, histórico e horas**.
 7. **Notificações in-app**.
 8. **Configurações** — endereço do servidor.
-
-## Fora do âmbito
-
-- Avaliações e reputação.
-- Denúncias e moderação de conteúdos.
-- Eventos guardados/favoritos.
-- Categorias geríveis (lista fixa no MVP).
-- Exportação CSV e relatórios avançados.
-- Histórico de ações administrativas.
-- Check-in/check-out na app.
-- Upload de fotografia.
-- Notificações push e iOS.
-- API como serviço separado (no MVP é o módulo `api` do Yii2).
 
 Ver [Requisitos](requisitos.md), [User Stories](user-stories.md) e [Roadmap](roadmap.md).

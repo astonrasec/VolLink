@@ -75,7 +75,7 @@ php yii migrate
 php yii migrate --migrationPath=@yii/rbac/migrations
 ```
 
-O primeiro comando cria as tabelas do domínio, as colunas do Modelo A, a candidatura por turno e as colunas de UI (11 migrações do projeto, incluindo a tabela `user` do template). O segundo cria as 4 tabelas de RBAC (`auth_*`), que vivem no `vendor`.
+O primeiro comando cria as tabelas do domínio, as colunas do núcleo, a candidatura por turno e as colunas de UI (11 migrações do projeto, incluindo a tabela `user` do template). O segundo cria as 4 tabelas de RBAC (`auth_*`), que vivem no `vendor`.
 
 No total ficam **16 registos** na tabela `migration` (11 do projeto + 4 do RBAC + `m000000_000000_base`).
 

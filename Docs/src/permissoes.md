@@ -1,6 +1,6 @@
 # Permissões
 
-O controlo de acessos usa **RBAC** (`yii\rbac\DbManager`), com **3 roles**, **12 permissões** e **1 regra**. No MVP, **10 permissões estão ativas** e **2 estão reservadas** para fase 2.
+O controlo de acessos usa **RBAC** (`yii\rbac\DbManager`), com **3 roles**, **12 permissões** e **1 regra**. No MVP, **10 permissões estão ativas** e **2 estão reservadas**.
 
 ## Roles
 
@@ -30,13 +30,13 @@ O controlo de acessos usa **RBAC** (`yii\rbac\DbManager`), com **3 roles**, **12
 | `contentModerate` | Moderar conteúdos e publicações | — | — | — | Reservada |
 | `systemManage` | Gerir as configurações do sistema | — | — | — | Reservada |
 
-!!! info "Modelo A aplicado"
-    O `RbacController` já aplica o Modelo A: a empresa é a única que cria e gere eventos; o voluntário só tem `applicationSubmit` e `accessMobile`. `contentModerate` e `systemManage` ficam reservadas, sem roles associadas.
+!!! info "Regras aplicadas"
+    O `RbacController` aplica estas regras: a empresa é a única que cria e gere eventos; o voluntário só tem `applicationSubmit` e `accessMobile`. `contentModerate` e `systemManage` ficam reservadas, sem roles associadas.
 
-    Em bases de dados onde o `rbac/init` já correu, o comando remove os links antigos (voluntário → permissões de evento, `accessMobile` em `sysAdmin`/`empresa`).
+    `php yii rbac/init` sincroniza os roles e permissões com a base de dados.
 
 !!! info "Permissões reservadas"
-    `contentModerate` e `systemManage` existem no RBAC, mas não têm entidade/serviço no MVP (não há `post` nem tabela de configurações). Ficam reservadas para fase 2 e não devem ser usadas em controladores.
+    `contentModerate` e `systemManage` existem no RBAC, mas não têm entidade/serviço no MVP (não há `post` nem tabela de configurações). Estão reservadas e não devem ser usadas em controladores.
 
 ## A regra `eventOwner`
 
@@ -46,7 +46,7 @@ Três permissões só fazem sentido no contexto de um evento concreto:
 - `applicationDecide`
 - `presenceConfirm`
 
-Todas usam a regra `common\rbac\EventOwnerRule`, que devolve `true` apenas quando o utilizador autenticado é o `creator_id` do evento. No Modelo A, o criador é sempre um utilizador da empresa:
+Todas usam a regra `common\rbac\EventOwnerRule`, que devolve `true` apenas quando o utilizador autenticado é o `creator_id` do evento. O criador é sempre um utilizador da empresa:
 
 ```php
 return $creatorId !== null && (int) $creatorId === (int) $user;

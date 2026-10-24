@@ -309,14 +309,5 @@ Como Empresa, quero editar o perfil público da organização para dar a conhece
 !!! note "Requisitos sem US dedicada"
     - `RF-FO-03` é uma regra de sistema (criador = coordenador), coberta pelas US5 e US6.
     - `RF-BO-05` (dashboard) é uma funcionalidade transversal do back-office; não tem US própria.
-    - Os requisitos removidos (RF-FO-05, 07, 13, 14; RF-BO-03, 06–09, 11–14; RF-AM-05, 06, 13, 14) estão listados em [Requisitos](requisitos.md#requisitos-removidos-fase-2).
-
-## User stories removidas
-
-| ID | Título | Motivo |
-|---|---|---|
-| US13 | Avaliar organizador | Sem `event_review`; fase 2 |
-| US14 | Denunciar evento ou utilizador | Sem `report`; fase 2 |
-| US15 | Guardar eventos de interesse | Sem `saved_event`; fase 2 |
 
 Ver [Requisitos](requisitos.md) e [Funcionalidades Web](funcionalidades-web.md) / [Android](funcionalidades-android.md).

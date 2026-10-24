@@ -171,8 +171,8 @@ Páginas principais:
 |---|---|
 | Esqueleto Yii2 Advanced | ✅ |
 | Documentação e mockups | ✅ MkDocs + Material, 33 imagens, publicado no GitHub Pages |
-| Esquema da base de dados | ✅ 11 migrações do projeto + 4 de RBAC; 12 tabelas, colunas do Modelo A, candidatura por turno e colunas de UI |
-| RBAC | ✅ 3 roles, 12 permissões, regra `eventOwner` e Modelo A; executar `rbac/init` para sincronizar a BD |
+| Esquema da base de dados | ✅ 11 migrações do projeto + 4 de RBAC; 12 tabelas, colunas do núcleo, candidatura por turno e colunas de UI |
+| RBAC | ✅ 3 roles, 12 permissões e regra `eventOwner`; executar `rbac/init` para sincronizar a BD |
 | URL amigáveis | ⏳ por ativar |
 | Modelos ActiveRecord | ⏳ por criar (só existem `User` e `LoginForm`) |
 | Autenticação completa | ⏳ por criar |
@@ -182,7 +182,7 @@ Páginas principais:
 | API REST | ⏳ por criar |
 | App Android | ⏳ por criar |
 
-> **Modelo A:** o RBAC já está alinhado — só a empresa cria e gere eventos; o voluntário participa. Se a base de dados já tinha o RBAC antigo, voltar a executar `php yii rbac/init` para remover os links antigos.
+> **RBAC:** só a empresa cria e gere eventos; o voluntário participa. Executar `php yii rbac/init` para sincronizar a base de dados.
 
 Consultar o [roadmap](Docs/src/roadmap.md) para os próximos passos e o âmbito da fase 2.
 

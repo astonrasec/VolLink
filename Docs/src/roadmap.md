@@ -3,17 +3,17 @@
 ## Concluído
 
 - [x] Esqueleto Yii2 Advanced (frontend, backend, consola e common)
-- [x] 11 migrações do projeto (7 tabelas de domínio + `user` + colunas do Modelo A + candidatura por turno + colunas de UI) e 4 migrações de RBAC
+- [x] 11 migrações do projeto (7 tabelas de domínio + `user` + colunas do núcleo + candidatura por turno + colunas de UI) e 4 migrações de RBAC
 - [x] RBAC: 3 roles, 12 permissões e a regra `eventOwner` no código
-- [x] RBAC Modelo A: só a empresa cria/gere eventos; `accessMobile` só no voluntário; permissões de conteúdo/sistema reservadas
-- [x] Colunas do núcleo do Modelo A: `shift.capacity`, `suspended_until`, `last_login_at`, `description`, `website`, `location`
+- [x] RBAC: só a empresa cria/gere eventos; `accessMobile` só no voluntário; permissões de conteúdo/sistema reservadas
+- [x] Colunas do núcleo: `shift.capacity`, `suspended_until`, `last_login_at`, `description`, `website`, `location`
 - [x] Candidatura por turno: `application.shift_id` e índice único `(user_id, shift_id)`
 - [x] Colunas de UI: `shift.name`, `user_details.suspension_reason` e `notification.read_at`
 - [x] Aliases do Apache para `/vollink` e `/vollink-admin`
 - [x] Documentação, diagrama de classes e revisão do documento de especificação
 
 !!! info "RBAC sincronizado"
-    `php yii rbac/init` foi executado e `php yii rbac/list` confirma os links do Modelo A: a empresa tem as permissões de evento; o voluntário tem `applicationSubmit` e `accessMobile`; o `sysAdmin` tem a moderação.
+    `php yii rbac/init` foi executado e `php yii rbac/list` confirma as permissões: a empresa tem as permissões de evento; o voluntário tem `applicationSubmit` e `accessMobile`; o `sysAdmin` tem a moderação.
 
 ## Próximos passos
 
@@ -31,27 +31,6 @@
 | 10 | `test/docs` | Testes dos fluxos principais e atualização da documentação |
 
 Cada linha corresponde a **uma branch** e a **um PR**.
-
-## Fase 2 (fora do âmbito)
-
-- Avaliações e reputação dos organizadores.
-- Denúncias e moderação de conteúdos.
-- Eventos guardados/favoritos.
-- Gestão de categorias (no MVP, lista fixa).
-- Exportação CSV e relatórios avançados.
-- Histórico de ações administrativas.
-- Check-in/check-out na app Android.
-- Upload de fotografia.
-- Notificações push e suporte iOS.
-- API como serviço separado (no MVP, módulo `api` do Yii2).
-
-## Decisões pendentes
-
-1. **`contentModerate` / `systemManage`** — permissões reservadas, sem entidade/serviço no MVP. Remover do uso ou manter como reservadas.
-2. **`post`/conteúdos** — não existe entidade `post`; a moderação de conteúdos não faz parte do MVP.
-3. **Categorias** — lista fixa em código (`AMBIENTE`, `EDUCACAO`, `SAUDE`, `SOCIAL`, `CULTURA`, `DESPORTO`, `OUTRO`) em vez de tabela `category`.
-4. **Turnos** — a gestão de turnos fica dentro de `eventManage`; não há permissão `shiftManage` no MVP.
-5. **Validação de empresas** — fica dentro de `userModerate`; não há permissão `companyValidate` no MVP.
 
 ## Lacunas conhecidas
 

@@ -148,39 +148,6 @@ Esta página é a **fonte de verdade** dos requisitos do MVP. O Word e o site us
 | RF-AM-12 | Filtrar feed por categoria e localização | - | - | x | - | - |
 
 
-## Requisitos removidos (fase 2)
-
-Estes requisitos existiam na versão inicial do documento, mas foram retirados do MVP para manter o sistema simples e sem tabelas/serviços que não são usados.
-
-| ID | Requisito | Motivo |
-|---|---|---|
-| RF-FO-05 | Guardar/remover eventos de interesse | Exigia `saved_event`; fase 2 |
-| RF-FO-07 | Reputação do organizador | Exigia `event_review`; fase 2 |
-| RF-FO-13 | Avaliar o organizador | Exigia `event_review`; fase 2 |
-| RF-FO-14 | Denunciar evento/utilizador | Exigia `report`; fase 2 |
-| RF-BO-03 | Exportar voluntários ativos em CSV | Exportação; fase 2 |
-| RF-BO-06 | Gerir categorias | No MVP a categoria é uma lista fixa |
-| RF-BO-07 | Notificações administrativas manuais | O MVP tem notificações automáticas |
-| RF-BO-08 | Gerir motivos de denúncia | Sem denúncias no MVP |
-| RF-BO-09 | Analisar denúncias | Sem denúncias no MVP |
-| RF-BO-11 | Corrigir eventos/turnos de outros | O SysAdmin só modera (cancelar/arquivar) |
-| RF-BO-12 | Exportar participações/horas em CSV | O relatório é apresentado no ecrã |
-| RF-BO-13 | Estatísticas por categoria/período | O dashboard tem contagens simples |
-| RF-BO-14 | Histórico de ações administrativas | Exigia `admin_log`; fase 2 |
-| RF-AM-05 | Preferência de notificações de novos eventos | Fase 2 |
-| RF-AM-06 | Check-in na app | As horas são registadas pelo coordenador |
-| RF-AM-13 | Carregar fotografia | Fase 2 |
-| RF-AM-14 | Consultar eventos guardados | Exigia `saved_event`; fase 2 |
-| RNF-05 | 95% de disponibilidade | Objetivo, não requisito rígido num projeto académico |
-| RNF-11 | Bloqueio após tentativas falhadas | Fase 2 |
-| RNF-13 | Backups diários com retenção de 30 dias | Backup manual antes de cada entrega |
-| RNF-15 | Upload de imagens JPG/PNG | Sem upload de imagens no MVP |
-| RNF-17 | WCAG 2.1 AA como requisito rígido | Boas práticas de acessibilidade, sem auditoria formal |
-| RNF-19 | 200 utilizadores simultâneos | Meta de teste: 50 utilizadores |
-
-!!! note "iOS"
-    O RNF-16 foi mantido apenas para **Android 8+**. O suporte iOS fica fora do âmbito.
-
 ## Rastreabilidade
 
 | Requisito | Onde vive |

@@ -107,7 +107,7 @@ Para manter o sistema simples e previsível, uma funcionalidade nova segue sempr
 9. **Documentação** — atualizar a página de funcionalidades e o roadmap.
 
 !!! tip "Regra de ouro"
-    Se a funcionalidade exigir uma **tabela nova**, pergunta primeiro se é mesmo do MVP. O núcleo atual tem 7 tabelas de domínio; tudo o resto deve ser fase 2 ou justificado.
+    Se a funcionalidade exigir uma **tabela nova**, pergunta primeiro se é mesmo do MVP. O núcleo atual tem 7 tabelas de domínio; qualquer adição tem de ser justificada.
 
 ## Qualidade
 

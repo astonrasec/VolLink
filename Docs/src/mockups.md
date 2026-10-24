@@ -1,6 +1,6 @@
 # Mockups
 
-Referência visual do MVP do VolLink: **Modelo A** (a empresa organiza, o voluntário participa) e **candidatura por turno**.
+Referência visual do MVP do VolLink: a empresa organiza, o voluntário participa, e a candidatura é feita por turno.
 
 !!! info "Como usar"
     As imagens são a referência de interface. O comportamento e as regras estão em [Requisitos](requisitos.md) e [User Stories](user-stories.md).

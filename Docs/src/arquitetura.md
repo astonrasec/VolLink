@@ -135,7 +135,7 @@ A API é uma aplicação Yii2 (`api/`) que partilha os modelos e o RBAC de `comm
 
 A app Android cobre o percurso do voluntário. Não implementa criação de eventos, gestão de turnos, decisões de candidaturas nem back-office. O âmbito técnico do AMSI está em [Funcionalidades Android](funcionalidades-android.md).
 
-### Modelo A: empresa organiza, voluntário participa
+### Empresa organiza, voluntário participa
 
 Só a **empresa** cria e gere eventos. O voluntário candidata-se, acompanha horas e usa a app Android. O **coordenador do evento** é o utilizador da empresa que criou o evento (`event.creator_id`), não uma role RBAC. A empresa tem perfil público e dashboard de impacto; o voluntário tem perfil pessoal e histórico.
 
