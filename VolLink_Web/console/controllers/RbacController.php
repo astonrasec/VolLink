@@ -33,22 +33,32 @@ class RbacController extends Controller
         'presenceConfirm'   => 'Registar horas e confirmar presencas nos turnos dos eventos que criei',
         // --- Utilizadores ---
         'userModerate'      => 'Back-office: gerir contas (ativar, suspender, rejeitar com motivo) e validar empresas',
-        // --- Conteudo e sistema ---
-        'contentModerate'   => 'Moderar conteudos e publicacoes',
-        'systemManage'      => 'Gerir as configuracoes do sistema',
+        // --- Conteudo e sistema (reservadas para fase 2) ---
+        'contentModerate'   => 'Reservada (fase 2): moderar conteudos e publicacoes',
+        'systemManage'      => 'Reservada (fase 2): gerir as configuracoes do sistema',
     ];
 
     private const RULES_ON = ['eventManage', 'applicationDecide', 'presenceConfirm'];
 
+    /**
+     * Só a empresa cria e gere eventos.
+     * O voluntário participa; o sysAdmin modera.
+     */
     private const LINKS = [
-        'sysAdmin'   => ['accessBackoffice', 'accessFrontoffice', 'accessMobile',
-            'moderateEvent', 'userModerate', 'contentModerate', 'systemManage'],
-        'voluntario' => ['accessFrontoffice', 'accessMobile',
-            'eventCreate', 'eventManage', 'applicationSubmit',
+        'sysAdmin'   => ['accessBackoffice', 'accessFrontoffice', 'moderateEvent', 'userModerate'],
+        'voluntario' => ['accessFrontoffice', 'accessMobile', 'applicationSubmit'],
+        'empresa'    => ['accessFrontoffice', 'eventCreate', 'eventManage',
             'applicationDecide', 'presenceConfirm'],
-        'empresa'    => ['accessFrontoffice', 'accessMobile',
-            'eventCreate', 'eventManage',
-            'applicationDecide', 'presenceConfirm'],
+    ];
+
+    /**
+     * Links que existiam no modelo antigo e têm de ser removidos de instalações
+     * onde o rbac/init já correu. O comando é idempotente.
+     */
+    private const OBSOLETE_LINKS = [
+        'sysAdmin'   => ['accessMobile', 'contentModerate', 'systemManage'],
+        'voluntario' => ['eventCreate', 'eventManage', 'applicationDecide', 'presenceConfirm'],
+        'empresa'    => ['accessMobile'],
     ];
 
     /** php yii rbac/init  (idempotente) */
@@ -93,6 +103,21 @@ class RbacController extends Controller
                 $child = $auth->getPermission($childName) ?: $auth->getRole($childName);
                 if ($child !== null && !$auth->hasChild($parent, $child)) {
                     $auth->addChild($parent, $child);
+                }
+            }
+        }
+
+        // Remover links do modelo antigo (voluntário como coordenador)
+        foreach (self::OBSOLETE_LINKS as $parentName => $children) {
+            $parent = $auth->getRole($parentName);
+            if ($parent === null) {
+                continue;
+            }
+            foreach ($children as $childName) {
+                $child = $auth->getPermission($childName);
+                if ($child !== null && $auth->hasChild($parent, $child)) {
+                    $auth->removeChild($parent, $child);
+                    $this->stdout(" - link {$parentName} -> {$childName}\n");
                 }
             }
         }
