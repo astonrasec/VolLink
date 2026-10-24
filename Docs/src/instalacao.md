@@ -1,60 +1,130 @@
-# Instalação
+﻿# Instalação
 
-Guia para colocar o VolLink a correr numa máquina local (Windows + XAMPP).
+Guia para colocar o VolLink a correr em **Windows** ou **Linux** e ficar com o ambiente pronto para trabalhar.
 
-## Requisitos
+!!! info "Dois caminhos"
+    - **Rápido (recomendado):** servidor embutido do PHP. Não precisas de Apache.
+    - **Apache:** configuração com `/vollink` e `/vollink-admin`, mais próxima de produção.
 
-| Ferramenta | Versão mínima |
-|---|---|
-| PHP | 8.2 (com `pdo_mysql`, `mbstring`, `intl`, `openssl` e `fileinfo`) |
-| Composer | 2.x |
-| MySQL / MariaDB | 5.7 / 10.4 |
-| Apache | 2.4 com `mod_rewrite` |
-| Python (opcional) | 3.9 — apenas para o site de documentação |
+## 0. Antes de começar
 
-!!! tip "XAMPP"
-    O XAMPP 8.2 já traz tudo o que é necessário. Basta iniciar o **Apache** e o **MySQL** no painel de controlo.
+- **Acesso ao repositório:** o `astonrasec/VolLink` é privado. Pede ao Diogo para te adicionar em **GitHub → Settings → Collaborators → Add people** (role **Write**) e aceita o convite por email.
+- **Git**, **PHP 8.2+**, **Composer 2** e **MySQL/MariaDB**.
+- **Python 3.9+** apenas se fores editar a documentação.
+
+!!! tip "Autenticação no GitHub"
+    No Linux, o `git clone` por HTTPS pede um **Personal Access Token** (scope `repo`) no lugar da palavra-passe. Em alternativa, configura uma chave SSH.
+
+!!! note "Branch de trabalho"
+    O trabalho atual está em `feat/mvp-foundation` até o PR ser merged. Se depois do clone não vires `Docs/src` nem as migrações novas, muda para essa branch:
+
+    ```bash
+    git switch feat/mvp-foundation
+    ```
+
+    Depois do merge, usa `main`.
 
 ## 1. Obter o código
 
+=== "Windows"
+
+    ```powershell
+    git clone https://github.com/astonrasec/VolLink.git
+    cd VolLink
+    ```
+
+=== "Linux"
+
+    ```bash
+    git clone https://github.com/astonrasec/VolLink.git
+    cd VolLink
+    ```
+
+## 2. Instalar as ferramentas
+
+### Windows — XAMPP
+
+1. Instala o [XAMPP 8.2](https://www.apachefriends.org/) (PHP 8.2 + MySQL/MariaDB + Apache).
+2. Adiciona `C:\xampp\php` ao **PATH** do Windows e abre um terminal novo.
+3. Instala o [Composer](https://getcomposer.org/download/).
+4. Confirma:
+
 ```powershell
-git clone https://github.com/astonrasec/VolLink.git
-cd VolLink
+php -v
+composer --version
+php -m | Select-String "pdo_mysql|mbstring|intl|openssl|fileinfo"
 ```
 
-## 2. Instalar as dependências
+Se faltar alguma extensão, descomenta-a no `C:\xampp\php\php.ini` e reinicia o Apache.
+
+### Linux — Ubuntu/Debian
+
+```bash
+sudo apt update
+sudo apt install -y git php php-cli php-mysql php-mbstring php-intl php-xml php-curl php-zip unzip composer python3 python3-venv python3-pip
+sudo apt install -y mysql-server
+sudo systemctl enable --now mysql
+```
+
+Se usares MariaDB, troca `mysql-server` por `mariadb-server` e o serviço por `mariadb`.
+
+Confirma:
+
+```bash
+php -v
+composer --version
+php -m | grep -E "pdo_mysql|mbstring|intl|openssl|fileinfo"
+```
+
+!!! tip "PHP 8.2+"
+    O Ubuntu 24.04 instala PHP 8.3, que é compatível. O projeto exige PHP 8.2 ou superior.
+
+## 3. Instalar as dependências PHP
 
 ```powershell
 cd VolLink_Web
 composer install
 ```
 
-## 3. Inicializar os ambientes
+O `composer.lock` está versionado, por isso todos instalam as mesmas versões.
+
+## 4. Inicializar os ambientes
 
 ```powershell
-php init
+php init --env=Development --overwrite=n
 ```
 
-Escolhe **Development** (`0`) e confirma. Este passo cria os ficheiros `*-local.php` a partir dos templates em `VolLink_Web/environments/`.
+Este passo cria:
+
+- `common/config/main-local.php`, `frontend/config/main-local.php`, etc.;
+- `frontend/web/index.php` e `backend/web/index.php`;
+- as pastas `runtime/` e `web/assets/`.
 
 !!! warning "Ficheiros locais"
-    Os ficheiros `main-local.php` e `params-local.php` contêm credenciais e **não são versionados**. Nunca os forces para o repositório.
+    Os `*-local.php` contêm credenciais e **não são versionados**. Nunca os forces para o repositório.
 
-## 4. Criar a base de dados
+## 5. Criar a base de dados
 
-```sql
-CREATE DATABASE vollink_db
-    CHARACTER SET utf8mb4
-    COLLATE utf8mb4_unicode_ci;
-```
+### Windows — XAMPP
 
-Pelo phpMyAdmin, ou pela linha de comandos:
+Inicia o **MySQL** no painel do XAMPP e executa:
 
 ```powershell
-& "C:\xampp\mysql\bin\mysql.exe" -uroot -e "CREATE DATABASE IF NOT EXISTS vollink_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+& "C:\xampp\mysql\bin\mysql.exe" -u root -e "CREATE DATABASE IF NOT EXISTS vollink_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+& "C:\xampp\mysql\bin\mysql.exe" -u root -e "CREATE USER IF NOT EXISTS 'vollink'@'localhost' IDENTIFIED BY 'vollink123'; GRANT ALL PRIVILEGES ON vollink_db.* TO 'vollink'@'localhost'; FLUSH PRIVILEGES;"
 ```
 
-## 5. Configurar a ligação
+### Linux
+
+```bash
+sudo mysql -e "CREATE DATABASE IF NOT EXISTS vollink_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+sudo mysql -e "CREATE USER IF NOT EXISTS 'vollink'@'localhost' IDENTIFIED BY 'vollink123'; GRANT ALL PRIVILEGES ON vollink_db.* TO 'vollink'@'localhost'; FLUSH PRIVILEGES;"
+```
+
+!!! note "Utilizador dedicado"
+    O utilizador `vollink` / `vollink123` é só para desenvolvimento local. Podes usar `root` sem palavra-passe no XAMPP, mas o utilizador dedicado funciona igual nos dois sistemas.
+
+## 6. Configurar a ligação à base de dados
 
 Edita `VolLink_Web/common/config/main-local.php` e garante o bloco `db`:
 
@@ -62,180 +132,279 @@ Edita `VolLink_Web/common/config/main-local.php` e garante o bloco `db`:
 'db' => [
     'class' => \yii\db\Connection::class,
     'dsn' => 'mysql:host=localhost;dbname=vollink_db;charset=utf8mb4',
-    'username' => 'root',
-    'password' => '',
+    'username' => 'vollink',
+    'password' => 'vollink123',
     'tablePrefix' => '',
 ],
 ```
 
-## 6. Criar as tabelas
+Se optares por `root` no XAMPP, usa `'username' => 'root'` e `'password' => ''`.
+
+## 7. Criar as tabelas e o RBAC
 
 ```powershell
-php yii migrate
-php yii migrate --migrationPath=@yii/rbac/migrations
+php yii migrate --interactive=0
+php yii migrate --migrationPath=@yii/rbac/migrations --interactive=0
+php yii rbac/init
 ```
 
-O primeiro comando cria as tabelas do domínio, as colunas do núcleo, a candidatura por turno e as colunas de UI (11 migrações do projeto, incluindo a tabela `user` do template). O segundo cria as 4 tabelas de RBAC (`auth_*`), que vivem no `vendor`.
+- O primeiro comando cria as tabelas do domínio e as colunas do núcleo.
+- O segundo cria as 4 tabelas `auth_*`.
+- O terceiro cria os **3 roles** e as **12 permissões**.
 
-No total ficam **16 registos** na tabela `migration` (11 do projeto + 4 do RBAC + `m000000_000000_base`).
-
-## 7. Criar os roles e as permissões
+Verifica:
 
 ```powershell
-php yii rbac/init
+php yii migrate/history
 php yii rbac/list
 ```
 
-Resultado esperado:
+Deves ver **16 registos** na tabela `migration` e **3 roles** com as **12 permissões**.
 
-```text
-OK - 3 roles, 12 permissoes
-```
+## 8. Correr a aplicação
 
-O comando é idempotente: pode ser executado várias vezes sem duplicar registos.
+### Opção A — servidor embutido (recomendado)
 
-## 8. Configurar o Apache
+Abre **dois terminais** em `VolLink_Web`.
 
-### 8.1 Alias
-
-No fim de `C:\xampp\apache\conf\httpd.conf`, adiciona os dois blocos abaixo. **O backend tem de vir primeiro**, para o Apache não confundir `/vollink` com `/vollink-admin`.
-
-```apache
-Alias /vollink-admin "C:/Git/VolLink/VolLink_Web/backend/web"
-<Directory "C:/Git/VolLink/VolLink_Web/backend/web">
-    AllowOverride All
-    Require all granted
-</Directory>
-
-Alias /vollink "C:/Git/VolLink/VolLink_Web/frontend/web"
-<Directory "C:/Git/VolLink/VolLink_Web/frontend/web">
-    AllowOverride All
-    Require all granted
-</Directory>
-```
-
-Ajusta os caminhos se o projeto estiver noutra pasta. Depois reinicia o Apache.
-
-### 8.2 URLs amigáveis
-
-Ativa o `urlManager` em `VolLink_Web/common/config/main.php`, dentro de `components`:
-
-```php
-'urlManager' => [
-    'enablePrettyUrl' => true,
-    'showScriptName' => false,
-],
-```
-
-Cria o ficheiro `.htaccess` em `frontend/web/` **e** em `backend/web/`:
-
-```apache
-RewriteEngine on
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . index.php
-```
-
-### 8.3 Sem Apache
-
-Para testes rápidos, o servidor embutido do PHP também serve:
+Terminal 1 — front-office:
 
 ```powershell
-cd VolLink_Web
-php -S localhost:8080 -t frontend/web
+php yii serve 127.0.0.1:8080 --docroot=frontend/web
 ```
 
-Neste caso não há URLs amigáveis: o acesso é feito por `index.php?r=...`.
+Terminal 2 — back-office:
 
-## 9. Verificar
+```powershell
+php yii serve 127.0.0.1:8081 --docroot=backend/web
+```
 
 | Aplicação | URL |
 |---|---|
-| Front-office | <http://localhost/vollink> |
-| Back-office | <http://localhost/vollink-admin> |
+| Front-office | <http://127.0.0.1:8080/> |
+| Login do front-office | <http://127.0.0.1:8080/index.php?r=site%2Flogin> |
+| Back-office | <http://127.0.0.1:8081/> |
+| Login do back-office | <http://127.0.0.1:8081/index.php?r=site%2Flogin> |
 
-Para dar acesso de administrador a uma conta:
+Os comandos são iguais em Windows e Linux. Para parar, usa `Ctrl+C`.
 
-```powershell
-php yii rbac/assign utilizador@exemplo.pt sysAdmin
-```
+!!! note "URLs amigáveis"
+    Por omissão o `urlManager` está comentado, por isso os endereços usam `index.php?r=...`. As páginas e os links gerados pelo Yii funcionam normalmente.
 
-## 10. API REST (planeada)
+### Opção B — Apache
 
-O módulo `api/` ainda não existe no repositório. Quando for criado, segue o mesmo padrão do frontend/backend:
+#### Windows — XAMPP
+
+No fim de `C:\xampp\apache\conf\httpd.conf`, adiciona os dois blocos. **O backend tem de vir primeiro**, para o Apache não confundir `/vollink` com `/vollink-admin`.
 
 ```apache
-Alias /vollink-api "C:/Git/VolLink/VolLink_Web/api/web"
-<Directory "C:/Git/VolLink/VolLink_Web/api/web">
+Alias /vollink-admin "C:/VolLink/VolLink_Web/backend/web"
+<Directory "C:/VolLink/VolLink_Web/backend/web">
+    AllowOverride All
+    Require all granted
+</Directory>
+
+Alias /vollink "C:/VolLink/VolLink_Web/frontend/web"
+<Directory "C:/VolLink/VolLink_Web/frontend/web">
     AllowOverride All
     Require all granted
 </Directory>
 ```
 
-- A API fica disponível em `http://localhost/vollink-api`.
-- A autenticação é por token: `POST /api/auth/login` devolve o `auth_key` do utilizador.
-- A app Android envia `Authorization: Bearer <token>`.
-- A permissão `accessMobile` deve ficar apenas no role `voluntario` no MVP.
+- Ajusta `C:/VolLink` para a pasta onde fizeste o clone. Usa barras `/`.
+- Confirma que `LoadModule rewrite_module modules/mod_rewrite.so` está descomentado.
+- Reinicia o Apache.
 
-## 11. App Android (planeada)
+#### Linux — Apache2
 
-Pré-requisitos:
+```bash
+sudo apt install -y apache2 libapache2-mod-php
+sudo a2enmod rewrite
+sudo nano /etc/apache2/conf-available/vollink.conf
+```
 
-| Ferramenta | Versão |
+!!! note "Pasta do projeto"
+    Os exemplos usam `/var/www/VolLink`. Se clonaste noutro sítio, move o projeto:
+
+    ```bash
+    sudo mkdir -p /var/www
+    sudo mv ~/VolLink /var/www/VolLink
+    sudo chown -R "$USER":www-data /var/www/VolLink
+    ```
+
+Conteúdo do ficheiro (ajusta `/var/www/VolLink` se o clone estiver noutro sítio):
+
+```apache
+Alias /vollink-admin /var/www/VolLink/VolLink_Web/backend/web
+<Directory /var/www/VolLink/VolLink_Web/backend/web>
+    AllowOverride All
+    Require all granted
+</Directory>
+
+Alias /vollink /var/www/VolLink/VolLink_Web/frontend/web
+<Directory /var/www/VolLink/VolLink_Web/frontend/web>
+    AllowOverride All
+    Require all granted
+</Directory>
+```
+
+Ativa e recarrega:
+
+```bash
+sudo a2enconf vollink
+sudo systemctl enable --now apache2
+sudo systemctl reload apache2
+```
+
+Permissões para o Apache conseguir ler e escrever:
+
+```bash
+sudo chown -R "$USER":www-data /var/www/VolLink
+sudo find /var/www/VolLink -type d -exec chmod 775 {} \;
+sudo find /var/www/VolLink -type f -exec chmod 664 {} \;
+```
+
+| Aplicação | URL |
 |---|---|
-| Android Studio | versão atual |
-| Android SDK | mínimo Android 8 (API 26) |
-| Volley | biblioteca de rede obrigatória (AMSI) |
-| SQLite | cache local (Room não conta para o AMSI) |
-| SharedPreferences | endereço do servidor e token |
+| Front-office | <http://localhost/vollink/> |
+| Back-office | <http://localhost/vollink-admin/> |
 
-Passos:
+??? note "Opcional: ativar URLs amigáveis"
+    Só é necessário se quiseres endereços como `/vollink/site/login` em vez de `index.php?r=site%2Flogin`.
 
-1. Abrir o projeto Android em Android Studio.
-2. Configurar o **endereço do servidor** no ecrã de Configurações da app (ex.: `http://192.168.1.10/vollink-api`).
-3. Testar o login com uma conta de voluntário.
-4. Confirmar que o feed, o detalhe, a candidatura e o cancelamento funcionam.
+    1. Em `VolLink_Web/frontend/config/main.php` e `VolLink_Web/backend/config/main.php`, descomenta o bloco `urlManager`.
+    2. Cria `.htaccess` em `frontend/web` e `backend/web`:
 
-!!! note "Estado"
-    A app Android ainda não está no repositório. O âmbito e os ecrãs estão em [Funcionalidades Android](funcionalidades-android.md).
+    === "Windows"
 
-## Problemas comuns
+        ```powershell
+        $rule = @"
+        RewriteEngine on
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteRule . index.php
+        "@
+        Set-Content VolLink_Web\frontend\web\.htaccess $rule -Encoding ascii
+        Set-Content VolLink_Web\backend\web\.htaccess $rule -Encoding ascii
+        ```
+
+    === "Linux"
+
+        ```bash
+        for dir in frontend backend; do
+          cat > "VolLink_Web/$dir/web/.htaccess" <<'EOF'
+        RewriteEngine on
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteRule . index.php
+        EOF
+        done
+        ```
+
+    3. Confirma que o Apache tem `mod_rewrite` e `AllowOverride All`.
+    4. Passa a usar `/vollink/site/login` e `/vollink-admin/site/login`.
+
+## 9. Verificar o ambiente
+
+```powershell
+php yii migrate/history
+php yii rbac/list
+php -l frontend/controllers/SiteController.php
+```
+
+- `migrate/history` deve listar **16 registos**.
+- `rbac/list` deve mostrar `empresa`, `sysAdmin` e `voluntario`.
+- Abre o front-office e o back-office nos URLs acima.
+
+Comandos úteis depois de existir uma conta:
+
+```powershell
+php yii rbac/assign utilizador@exemplo.pt sysAdmin
+php yii rbac/check utilizador@exemplo.pt accessBackoffice
+```
+
+## 10. Documentação
+
+O site também está publicado em <https://astonrasec.github.io/VolLink/>. Para o editar localmente, abre um terminal na **raiz do repositório** e entra em `Docs`:
+
+### Windows
+
+```powershell
+cd Docs
+py -3 -m venv .venv
+.\.venv\Scripts\python -m pip install --upgrade pip
+.\.venv\Scripts\python -m pip install -r requirements.txt
+.\.venv\Scripts\python -m mkdocs serve -a 127.0.0.1:8001
+```
+
+!!! tip "Comando `py`"
+    Se o launcher `py` não existir na tua máquina, usa `python` no lugar de `py -3`.
+
+### Linux
+
+```bash
+cd Docs
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python -m mkdocs serve -a 127.0.0.1:8001
+```
+
+Abre <http://127.0.0.1:8001>. Para gerar o site estático, na pasta `Docs`:
+
+```powershell
+.\.venv\Scripts\python -m mkdocs build
+```
+
+```bash
+python -m mkdocs build
+```
+
+!!! note "Deploy"
+    O site de produção é atualizado automaticamente pelo workflow `.github/workflows/docs.yml` em cada push para `main`. Não é preciso fazer deploy manual.
+
+## 11. Fluxo de trabalho
+
+```bash
+git switch main
+git pull
+git switch -c feat/nome-da-tarefa
+
+# editar e testar
+
+git add .
+git commit -m "feat: descrição curta"
+git push -u origin feat/nome-da-tarefa
+```
+
+- Abre um **Pull Request** para `main`.
+- O merge em `main` atualiza a documentação publicada.
+- **Nunca** comites `vendor/`, `*-local.php`, `Docs/site/` ou `.venv/`.
+
+## 12. Problemas comuns
 
 | Sintoma | Causa provável | Solução |
 |---|---|---|
-| `404` em `/vollink/site/login` | `mod_rewrite` desligado ou `AllowOverride None` | Ativar o módulo e usar `AllowOverride All` |
-| Página em branco | Erro PHP | Ver `VolLink_Web/runtime/logs/app.log` |
-| `could not find driver` | `pdo_mysql` desligado | Ativar no `php.ini` e reiniciar o Apache |
-| `Unknown database 'vollink_db'` | Base de dados não criada | Executar o passo 4 |
-| MySQL não arranca no XAMPP | Serviço preso | Carregar em **Stop** e depois **Start** |
+| `php` não é reconhecido | PHP fora do PATH | Adiciona `C:\xampp\php` ao PATH (Windows) ou instala `php-cli` (Linux) e abre um terminal novo |
+| `composer` não é reconhecido | Composer não instalado | Instala o Composer e abre um terminal novo |
+| `could not find driver` | `pdo_mysql` desligado | Ativa a extensão no `php.ini` / instala `php-mysql` e reinicia o Apache |
+| `Unknown database 'vollink_db'` | Base de dados não criada | Repete o passo 5 |
+| `Access denied for user 'vollink'` | Credenciais erradas | Confirma o utilizador e a palavra-passe no `main-local.php` |
+| `No such file or directory` (MySQL) | Socket em falta no Linux | Usa `mysql:host=127.0.0.1` no DSN ou inicia o MySQL |
+| `The directory is not writable` | `runtime/` ou `web/assets/` sem permissões | `php init` outra vez ou ajusta as permissões (passo 8B) |
+| `404` em `/vollink/site/login` | URLs amigáveis desligadas | Usa `/vollink/index.php?r=site%2Flogin` ou ativa o bloco opcional |
+| `Port 8080 already in use` | Porta ocupada | Usa `8082`/`8083` nos comandos `php yii serve` |
+| `No module named mkdocs` | Venv não ativado | Usa `Docs\.venv\Scripts\python` (Windows) ou `Docs/.venv/bin/python` (Linux) |
+| `Activate.ps1 cannot be loaded` | Política do PowerShell | Usa `Docs\.venv\Scripts\python` diretamente, sem ativar |
+| `auth_item` não existe | RBAC migrations não correram | Executa o segundo comando do passo 7 |
 
-## Documentação
+## 13. API e Android
 
-O site é servido pelo **Apache** a partir de `Docs/site`, sem precisares de manter o `mkdocs serve` aberto:
+A API REST e a app Android ainda não estão no repositório. O âmbito, os ecrãs e os endpoints estão definidos em:
 
-- <http://127.0.0.1:8000>
-- <http://localhost/vollink-docs>
+- [Funcionalidades Android](funcionalidades-android.md)
+- [Arquitetura](arquitetura.md)
+- [Roadmap](roadmap.md)
 
-O `httpd.conf` tem um `Listen 8000`, um `<VirtualHost *:8000>` com `DocumentRoot "C:/Git/VolLink/Docs/site"` e o alias `/vollink-docs`.
-
-Para atualizar o site depois de editares Markdown:
-
-```powershell
-cd Docs
-mkdocs build
-```
-
-O Apache serve os ficheiros novos imediatamente; **não é preciso reiniciar**.
-
-Para pré-visualizar com live reload, usa outra porta (a 8000 está ocupada pelo Apache):
-
-```powershell
-cd Docs
-mkdocs serve -a 127.0.0.1:8001
-```
-
-Instalação das dependências do MkDocs:
-
-```powershell
-python -m pip install -r Docs/requirements.txt
-```
+Quando forem criados, seguem os mesmos passos de instalação e configuração da base de dados.
