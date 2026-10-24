@@ -202,7 +202,6 @@ Estes requisitos existiam na versão inicial do documento, mas foram retirados d
 
 | Verbo | Endpoint | Descrição |
 |---|---|---|
-
 | POST | `/api/auth/register` | Registar um voluntário |
 | POST | `/api/auth/login` | Autenticar e obter token |
 | POST | `/api/auth/verify-email` | Confirmar o email da conta |

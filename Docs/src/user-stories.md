@@ -268,7 +268,6 @@ Como Empresa, quero editar o perfil público da organização para dar a conhece
 
 | Requisito | User stories |
 |---|---|
-
 | `RF-FO-01` | US2 |
 | `RF-FO-02` | US5 |
 | `RF-FO-03` | — |
