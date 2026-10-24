@@ -126,7 +126,9 @@ A app Android fica em `android/` (planeada) ou num repositório próprio, com os
 
 ## Documentação
 
-O site é servido pelo **Apache** a partir de `Docs/site`:
+O site está publicado no GitHub Pages: <https://astonrasec.github.io/VolLink/>
+
+Em local, é servido pelo **Apache** a partir de `Docs/site`:
 
 - <http://127.0.0.1:8000>
 - <http://localhost/vollink-docs>
@@ -148,6 +150,8 @@ mkdocs serve -a 127.0.0.1:8001
 ```
 
 O resultado do build fica em `Docs/site/` (não versionado).
+
+O deploy é automático: cada push para `main` que altere `Docs/` reconstrói e publica o site através do workflow `.github/workflows/docs.yml`. Também pode ser executado manualmente em **Actions → Docs → Run workflow**.
 
 Páginas principais:
 
