@@ -8,7 +8,7 @@ Guia para colocar o VolLink a correr em **Windows** ou **Linux** e ficar com o a
 
 ## 0. Antes de começar
 
-- **Acesso ao repositório:** o `astonrasec/VolLink` é privado. Se ainda não tiveres acesso, pede ao Diogo para te adicionar em **GitHub → Settings → Collaborators → Add people** (role **Write**) e aceita o convite por email.
+- **Acesso ao repositório:** o `astonrasec/VolLink` é privado. Confirma que já consegues abrir o repositório no GitHub antes de continuar.
 - **Git**, **PHP 8.2+**, **Composer 2** e **MySQL/MariaDB**.
 - **Python 3.9+** apenas se fores editar a documentação.
 
