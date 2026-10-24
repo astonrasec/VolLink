@@ -1,6 +1,7 @@
 site_name: VolLink
 site_description: Plataforma de Gestão de Voluntariado
 site_author: Diogo Almeida
+site_url: https://astonrasec.github.io/VolLink/
 docs_dir: src
 site_dir: site
 
