@@ -51,8 +51,7 @@ O VolLink liga voluntários, empresas e organizações a eventos de voluntariado
 - Notificações in-app
 - Menu de configuração do servidor
 
-!!! note "Âmbito Android"
-    A app Android é só para voluntários e cumpre os requisitos técnicos do AMSI: 6 a 10 atividades, 4 CRUD sobre o web service, 2 atividades com input, 2 dinâmicas, 1 master/detail, Volley, SharedPreferences, SQLite e menu de configuração do servidor.
+> **Âmbito Android:** a app é só para voluntários e cumpre os requisitos técnicos do AMSI — 6 a 10 atividades, 4 CRUD sobre o web service, 2 atividades com input, 2 dinâmicas, 1 master/detail, Volley, SharedPreferences, SQLite e menu de configuração do servidor.
 
 ## Perfis
 
@@ -109,11 +108,12 @@ Os passos completos, incluindo a configuração do Apache e da API, estão na [d
 
 ```text
 VolLink/
+├── .github/workflows/     Deploy da documentação (GitHub Pages)
 ├── Docs/                  Documentação (MkDocs + Material)
 │   ├── src/               Páginas em Markdown
+│   ├── requirements.txt
 │   └── mkdocs.yml
 ├── VolLink_Web/           Aplicação Yii2 Advanced
-│   ├── api/               API REST (planeada)
 │   ├── backend/           Back-office (sysAdmin)
 │   ├── common/            Modelos, configuração e RBAC
 │   ├── console/           Migrações e comandos
@@ -122,7 +122,7 @@ VolLink/
 └── README.md
 ```
 
-A app Android fica em `android/` (planeada) ou num repositório próprio, com os docentes adicionados.
+A API REST será criada em `VolLink_Web/api/` e a app Android em `android/` (ambas planeadas); a Android pode ficar num repositório próprio, com os docentes adicionados.
 
 ## Documentação
 
@@ -137,6 +137,7 @@ Para atualizar depois de editar Markdown:
 
 ```powershell
 cd Docs
+pip install -r requirements.txt
 mkdocs build
 ```
 
@@ -169,6 +170,7 @@ Páginas principais:
 | Área | Estado |
 |---|---|
 | Esqueleto Yii2 Advanced | ✅ |
+| Documentação e mockups | ✅ MkDocs + Material, 33 imagens, publicado no GitHub Pages |
 | Esquema da base de dados | ✅ 11 migrações do projeto + 4 de RBAC; 12 tabelas, colunas do Modelo A, candidatura por turno e colunas de UI |
 | RBAC | ✅ 3 roles, 12 permissões, regra `eventOwner` e Modelo A; executar `rbac/init` para sincronizar a BD |
 | URL amigáveis | ⏳ por ativar |
@@ -180,7 +182,7 @@ Páginas principais:
 | API REST | ⏳ por criar |
 | App Android | ⏳ por criar |
 
-> **Modelo A:** o RBAC já está alinhado — só a empresa cria e gere eventos; o voluntário participa. Em bases de dados onde o `rbac/init` já correu, executar `php yii rbac/init` para remover os links antigos.
+> **Modelo A:** o RBAC já está alinhado — só a empresa cria e gere eventos; o voluntário participa. Se a base de dados já tinha o RBAC antigo, voltar a executar `php yii rbac/init` para remover os links antigos.
 
 Consultar o [roadmap](Docs/src/roadmap.md) para os próximos passos e o âmbito da fase 2.
 
