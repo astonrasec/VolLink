@@ -94,7 +94,7 @@ O alias do backend tem de ser declarado **antes** do alias do frontend no `httpd
 - `POST /api/auth/login` valida email/palavra-passe e devolve o **token** (`user.auth_key`) e o perfil.
 - A app envia `Authorization: Bearer <token>` em todos os pedidos autenticados.
 - O endpoint de login é público; o feed e o detalhe do evento podem ser públicos; candidaturas, perfil e notificações exigem token.
-- A API usa HTTPS em produção (RNF-08).
+- A API usa HTTPS em produção (RNF-07).
 
 ## Diagrama de classes
 

@@ -19,7 +19,7 @@ Como Visitante, quero explorar a lista de eventos publicados para encontrar inic
 - Abrir o detalhe com descrição, turnos, vagas e requisitos.
 - O mesmo feed deve estar disponível na app Android após autenticação.
 
-**Requisitos:** `RF-FO-04`, `RF-FO-08`, `RF-AM-02`, `RF-AM-04`, `RF-AM-12`
+**Requisitos:** `RF-FO-04`, `RF-FO-06`, `RF-AM-02`, `RF-AM-04`, `RF-AM-10`
 
 ## US2 — Registar conta de voluntário
 
@@ -35,7 +35,7 @@ Como Voluntário, quero criar uma conta pessoal para me candidatar a eventos e g
 - O sistema envia um email de confirmação; a conta fica ativa após a confirmação.
 - O login por email e palavra-passe funciona no website e na app Android.
 
-**Requisitos:** `RF-FO-01`, `RF-FO-20`, `RF-AM-01`
+**Requisitos:** `RF-FO-01`, `RF-FO-16`, `RF-AM-01`
 
 ## US3 — Candidatar-me a um turno
 
@@ -52,7 +52,7 @@ Como Voluntário, quero candidatar-me a um turno de um evento para garantir a mi
 - Não são permitidas candidaturas duplicadas do mesmo voluntário ao mesmo turno.
 - O voluntário pode candidatar-se a mais do que um turno do mesmo evento.
 
-**Requisitos:** `RF-FO-10`, `RF-AM-03`, `RF-AM-09`
+**Requisitos:** `RF-FO-08`, `RF-AM-03`, `RF-AM-07`
 
 ## US4 — Receber notificações sobre candidaturas
 
@@ -66,7 +66,7 @@ Como Voluntário, quero receber lembretes e atualizações sobre as minhas candi
 - Enviar um lembrete 24 horas antes do início do turno.
 - As notificações ficam disponíveis na app Android e no website.
 
-**Requisitos:** `RF-AM-10`, `RF-AM-11`
+**Requisitos:** `RF-AM-08`, `RF-AM-09`
 
 ## US5 — Criar e publicar evento
 
@@ -81,7 +81,7 @@ Como Coordenador (empresa), quero criar e publicar eventos para angariar volunt�
 - A data do evento tem de ser posterior à data de criação e o prazo anterior ao início.
 - O evento fica visível publicamente após a publicação.
 
-**Requisitos:** `RF-FO-02`, `RF-FO-09`, `RF-FO-11`
+**Requisitos:** `RF-FO-02`, `RF-FO-07`, `RF-FO-09`
 
 ## US6 — Validar candidaturas de voluntários
 
@@ -96,7 +96,7 @@ Como Coordenador (empresa), quero analisar e aprovar ou rejeitar candidaturas po
 - O sistema impede aprovações acima da capacidade do turno e do evento.
 - O voluntário é notificado do resultado.
 
-**Requisitos:** `RF-FO-10`, `RF-FO-17`
+**Requisitos:** `RF-FO-08`, `RF-FO-13`
 
 ## US7 — Registar e validar assiduidade
 
@@ -111,7 +111,7 @@ Como Coordenador (empresa), quero registar a presença e as horas cumpridas para
 - O total de horas do voluntário é atualizado após a confirmação.
 - O coordenador só pode confirmar presenças nos eventos que criou.
 
-**Requisitos:** `RF-FO-12`
+**Requisitos:** `RF-FO-10`
 
 ## US8 — Validar registo de novas empresas
 
@@ -125,7 +125,7 @@ Como Sys Admin, quero analisar e aprovar pedidos de adesão de empresas para gar
 - O Sys Admin aprova ou rejeita, indicando o motivo da rejeição.
 - A empresa recebe uma notificação por email com o resultado.
 
-**Requisitos:** `RF-BO-15`
+**Requisitos:** `RF-BO-06`
 
 ## US9 — Consultar relatório do evento
 
@@ -139,7 +139,7 @@ Como Coordenador (empresa), quero consultar um resumo da participação e das ho
 - Apresenta o número de candidaturas, aprovações, presenças e horas confirmadas.
 - Pode ser filtrado por evento e por período.
 
-**Requisitos:** `RF-FO-21`
+**Requisitos:** `RF-FO-17`
 
 ## US10 — Registar conta de empresa
 
@@ -156,7 +156,7 @@ Como Empresa, quero registar a conta da minha organização para criar e gerir e
 - Só pode criar e publicar eventos após a validação.
 - O sistema envia um email de confirmação do endereço.
 
-**Requisitos:** `RF-FO-20`, `RF-BO-15`
+**Requisitos:** `RF-FO-16`, `RF-BO-06`
 
 ## US11 — Cancelar candidatura a um turno
 
@@ -170,7 +170,7 @@ Como Voluntário, quero cancelar a minha candidatura a um turno para libertar a 
 - A vaga fica novamente disponível no turno.
 - O voluntário recebe confirmação e o coordenador é notificado.
 
-**Requisitos:** `RF-FO-19`, `RF-AM-08`
+**Requisitos:** `RF-FO-15`, `RF-AM-06`
 
 ## US12 — Gerir perfil e palavra-passe
 
@@ -186,9 +186,9 @@ Como Utilizador autenticado, quero consultar e editar o meu perfil e alterar a p
 - A nova palavra-passe cumpre os requisitos mínimos.
 - O sistema confirma o sucesso da alteração.
 
-**Requisitos:** `RF-FO-06`, `RF-FO-15`, `RF-FO-16`
+**Requisitos:** `RF-FO-05`, `RF-FO-11`, `RF-FO-12`
 
-## US16 — Consultar histórico e horas
+## US13 — Consultar histórico e horas
 
 **Story Points:** 5 · **Plataforma:** Web + Android
 
@@ -201,9 +201,9 @@ Como Voluntário, quero consultar o histórico das minhas participações e o to
 - O total de horas é calculado a partir das presenças confirmadas.
 - Disponível no website e na app Android, apenas para o próprio voluntário.
 
-**Requisitos:** `RF-FO-18`, `RF-AM-07`
+**Requisitos:** `RF-FO-14`, `RF-AM-05`
 
-## US17 — Moderar eventos
+## US14 — Moderar eventos
 
 **Story Points:** 5 · **Plataforma:** Web (back-office)
 
@@ -217,7 +217,7 @@ Como Sys Admin, quero moderar eventos publicados para garantir o cumprimento das
 
 **Requisitos:** `RF-BO-02`
 
-## US18 — Gerir utilizadores e suspensões
+## US15 — Gerir utilizadores e suspensões
 
 **Story Points:** 8 · **Plataforma:** Web (back-office)
 
@@ -230,9 +230,9 @@ Como Sys Admin, quero gerir utilizadores e aplicar suspensões para manter a pla
 - Alterar o estado (ativo, suspenso ou inativo) e consultar o último login.
 - O utilizador suspenso não consegue autenticar-se até ao fim da suspensão.
 
-**Requisitos:** `RF-BO-01`, `RF-BO-04`, `RF-BO-10`
+**Requisitos:** `RF-BO-01`, `RF-BO-03`, `RF-BO-05`
 
-## US19 — Consultar dashboard da empresa
+## US16 — Consultar dashboard da empresa
 
 **Story Points:** 5 · **Plataforma:** Web
 
@@ -245,9 +245,9 @@ Como Empresa, quero consultar um dashboard com os meus eventos, candidaturas pen
 - Apresenta a taxa de aprovação das candidaturas.
 - Disponível no website, na área da empresa.
 
-**Requisitos:** `RF-FO-22`
+**Requisitos:** `RF-FO-18`
 
-## US20 — Editar perfil público da organização
+## US17 — Editar perfil público da organização
 
 **Story Points:** 5 · **Plataforma:** Web
 
@@ -260,7 +260,7 @@ Como Empresa, quero editar o perfil público da organização para dar a conhece
 - O perfil lista os eventos publicados da empresa.
 - Só a empresa pode editar o seu próprio perfil.
 
-**Requisitos:** `RF-FO-23`, `RF-FO-24`
+**Requisitos:** `RF-FO-19`, `RF-FO-20`
 
 ## Cobertura requisitos → user stories
 
@@ -270,42 +270,42 @@ Como Empresa, quero editar o perfil público da organização para dar a conhece
 | `RF-FO-02` | US5 |
 | `RF-FO-03` | — |
 | `RF-FO-04` | US1 |
-| `RF-FO-06` | US12 |
-| `RF-FO-08` | US1 |
+| `RF-FO-05` | US12 |
+| `RF-FO-06` | US1 |
+| `RF-FO-07` | US5 |
+| `RF-FO-08` | US3, US6 |
 | `RF-FO-09` | US5 |
-| `RF-FO-10` | US3, US6 |
-| `RF-FO-11` | US5 |
-| `RF-FO-12` | US7 |
-| `RF-FO-15` | US12 |
-| `RF-FO-16` | US12 |
-| `RF-FO-17` | US6 |
+| `RF-FO-10` | US7 |
+| `RF-FO-11` | US12 |
+| `RF-FO-12` | US12 |
+| `RF-FO-13` | US6 |
+| `RF-FO-14` | US13 |
+| `RF-FO-15` | US11 |
+| `RF-FO-16` | US2, US10 |
+| `RF-FO-17` | US9 |
 | `RF-FO-18` | US16 |
-| `RF-FO-19` | US11 |
-| `RF-FO-20` | US2, US10 |
-| `RF-FO-21` | US9 |
-| `RF-FO-22` | US19 |
-| `RF-FO-23` | US20 |
-| `RF-FO-24` | US20 |
-| `RF-BO-01` | US18 |
-| `RF-BO-02` | US17 |
-| `RF-BO-04` | US18 |
-| `RF-BO-05` | — |
-| `RF-BO-10` | US18 |
-| `RF-BO-15` | US8, US10 |
+| `RF-FO-19` | US17 |
+| `RF-FO-20` | US17 |
+| `RF-BO-01` | US15 |
+| `RF-BO-02` | US14 |
+| `RF-BO-03` | US15 |
+| `RF-BO-04` | — |
+| `RF-BO-05` | US15 |
+| `RF-BO-06` | US8, US10 |
 | `RF-AM-01` | US2 |
 | `RF-AM-02` | US1 |
 | `RF-AM-03` | US3 |
 | `RF-AM-04` | US1 |
-| `RF-AM-07` | US16 |
-| `RF-AM-08` | US11 |
-| `RF-AM-09` | US3 |
-| `RF-AM-10` | US4 |
-| `RF-AM-11` | US4 |
-| `RF-AM-12` | US1 |
+| `RF-AM-05` | US13 |
+| `RF-AM-06` | US11 |
+| `RF-AM-07` | US3 |
+| `RF-AM-08` | US4 |
+| `RF-AM-09` | US4 |
+| `RF-AM-10` | US1 |
 
 
 !!! note "Requisitos sem US dedicada"
     - `RF-FO-03` é uma regra de sistema (criador = coordenador), coberta pelas US5 e US6.
-    - `RF-BO-05` (dashboard) é uma funcionalidade transversal do back-office; não tem US própria.
+    - `RF-BO-04` (dashboard) é uma funcionalidade transversal do back-office; não tem US própria.
 
 Ver [Requisitos](requisitos.md) e [Funcionalidades Web](funcionalidades-web.md) / [Android](funcionalidades-android.md).

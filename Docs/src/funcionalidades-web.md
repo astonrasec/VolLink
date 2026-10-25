@@ -17,7 +17,7 @@ O website do VolLink tem duas áreas:
 
 ## 1. Autenticação e conta
 
-**Requisitos:** RF-FO-01, RF-FO-15, RF-FO-16, RF-FO-20.
+**Requisitos:** RF-FO-01, RF-FO-11, RF-FO-12, RF-FO-16.
 
 - Registo com escolha do tipo de conta: **Voluntário** ou **Empresa**.
 - Verificação de email antes da ativação.
@@ -39,7 +39,7 @@ O website do VolLink tem duas áreas:
 
 ## 2. Perfil
 
-**Requisitos:** RF-FO-06, RF-FO-18.
+**Requisitos:** RF-FO-05, RF-FO-14.
 
 - Consultar e editar: **nome**, **competências** e **data de nascimento**.
 - Consultar histórico de participações e total de horas confirmadas.
@@ -47,7 +47,7 @@ O website do VolLink tem duas áreas:
 
 ## 3. Eventos e turnos
 
-**Requisitos:** RF-FO-02, RF-FO-03, RF-FO-04, RF-FO-08, RF-FO-09, RF-FO-10, RF-FO-11.
+**Requisitos:** RF-FO-02, RF-FO-03, RF-FO-04, RF-FO-06, RF-FO-07, RF-FO-08, RF-FO-09.
 
 ### Feed e pesquisa
 
@@ -95,7 +95,7 @@ stateDiagram-v2
 
 ## 4. Candidaturas
 
-**Requisitos:** RF-FO-10, RF-FO-17, RF-FO-19.
+**Requisitos:** RF-FO-08, RF-FO-13, RF-FO-15.
 
 - Só o **voluntário** se candidata; a empresa não.
 - A candidatura é **a um turno**. O voluntário escolhe um turno disponível e pode candidatar-se a mais do que um turno do mesmo evento.
@@ -124,7 +124,7 @@ stateDiagram-v2
 
 ## 5. Presenças e horas
 
-**Requisitos:** RF-FO-12, RF-FO-18.
+**Requisitos:** RF-FO-10, RF-FO-14.
 
 1. A candidatura é aprovada.
 2. O voluntário comparece no turno.
@@ -138,7 +138,7 @@ stateDiagram-v2
 
 ## 6. Relatório do evento
 
-**Requisito:** RF-FO-21.
+**Requisito:** RF-FO-17.
 
 - O coordenador consulta um resumo dos seus eventos:
   - número de candidaturas;
@@ -163,7 +163,7 @@ stateDiagram-v2
 
 ## 8. Perfil público da empresa
 
-**Requisitos:** RF-FO-23, RF-FO-24.
+**Requisitos:** RF-FO-19, RF-FO-20.
 
 - Cada empresa tem uma página pública com:
   - nome da organização;
@@ -178,7 +178,7 @@ stateDiagram-v2
 
 ## 9. Dashboard da empresa
 
-**Requisito:** RF-FO-22.
+**Requisito:** RF-FO-18.
 
 - A empresa vê apenas os seus dados:
   - eventos ativos e concluídos;
@@ -190,7 +190,7 @@ stateDiagram-v2
 
 ## 10. Back-office
 
-**Requisitos:** RF-BO-01, RF-BO-02, RF-BO-04, RF-BO-05, RF-BO-10, RF-BO-15.
+**Requisitos:** RF-BO-01, RF-BO-02, RF-BO-03, RF-BO-04, RF-BO-05, RF-BO-06.
 
 | Área | Ações | Permissão |
 |---|---|---|
