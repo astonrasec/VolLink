@@ -83,9 +83,9 @@ O VolLink liga voluntários, empresas e organizações a eventos de voluntariado
 ```powershell
 cd VolLink_Web
 composer install
-php init
-php yii migrate
-php yii migrate --migrationPath=@yii/rbac/migrations
+php init --env=Development --overwrite=n
+php yii migrate --interactive=0
+php yii migrate --migrationPath=@yii/rbac/migrations --interactive=0
 php yii rbac/init
 ```
 
@@ -101,6 +101,19 @@ Antes das migrações, configura a ligação à base de dados em `VolLink_Web/co
 ```
 
 O `main-local.php` **não é versionado**: as credenciais ficam apenas na tua máquina. Os templates em `VolLink_Web/environments/` têm valores neutros.
+
+Depois de atualizar o código (`git pull`), sincroniza as dependências e a base de dados:
+
+```powershell
+cd VolLink_Web
+composer install
+php yii migrate --interactive=0
+php yii migrate --migrationPath=@yii/rbac/migrations --interactive=0
+php yii rbac/init
+php yii cache/flush-all
+```
+
+`php yii migrate` só aplica as migrações novas e `php yii rbac/init` é idempotente. Confirma com `php yii migrate/new`: deve terminar com `No new migrations found. Your system is up-to-date.`.
 
 Os passos completos, incluindo a configuração do Apache e da API, estão na [documentação](Docs/src/instalacao.md).
 

@@ -1,4 +1,4 @@
-﻿# Instalação
+# Instalação
 
 Guia para colocar o VolLink a correr em **Windows** ou **Linux** e ficar com o ambiente pronto para trabalhar.
 
@@ -22,14 +22,8 @@ Guia para colocar o VolLink a correr em **Windows** ou **Linux** e ficar com o a
     cd VolLink
     ```
 
-!!! note "Branch de trabalho"
-    O trabalho atual está em `feat/mvp-foundation` até o PR ser merged. Se depois do clone não vires `Docs/src` nem as migrações novas, muda para essa branch:
-
-    ```bash
-    git switch feat/mvp-foundation
-    ```
-
-    Depois do merge, usa `main`.
+!!! note "Versão do código"
+    O clone traz a branch `main`, que já inclui a aplicação, as migrações e esta documentação. Trabalha sempre a partir dela e cria uma branch nova para cada tarefa (passo 12).
 
 ## 2. Instalar as ferramentas
 
@@ -146,11 +140,11 @@ php yii rbac/init
 Verifica:
 
 ```powershell
-php yii migrate/history
+php yii migrate/history 100
 php yii rbac/list
 ```
 
-Deves ver **16 registos** na tabela `migration` e **3 roles** com as **12 permissões**.
+Deves ver **15 registos** na tabela `migration` e **3 roles** com as **12 permissões**.
 
 ## 8. Correr a aplicação
 
@@ -298,12 +292,12 @@ sudo find /var/www/VolLink -type f -exec chmod 664 {} \;
 ## 9. Verificar o ambiente
 
 ```powershell
-php yii migrate/history
+php yii migrate/history 100
 php yii rbac/list
 php -l frontend/controllers/SiteController.php
 ```
 
-- `migrate/history` deve listar **16 registos**.
+- `migrate/history` deve listar **15 registos**.
 - `rbac/list` deve mostrar `empresa`, `sysAdmin` e `voluntario`.
 - Abre o front-office e o back-office nos URLs acima.
 
@@ -314,7 +308,46 @@ php yii rbac/assign utilizador@exemplo.pt sysAdmin
 php yii rbac/check utilizador@exemplo.pt accessBackoffice
 ```
 
-## 10. Documentação
+## 10. Atualizar o projeto e a base de dados
+
+Quando fizeres `git pull`, ou mudares para uma branch com migrações novas, atualiza as dependências e a base de dados. Começa na **raiz do repositório** e corre o resto em `VolLink_Web`:
+
+```powershell
+git pull
+cd VolLink_Web
+composer install
+php yii migrate --interactive=0
+php yii migrate --migrationPath=@yii/rbac/migrations --interactive=0
+php yii rbac/init
+php yii cache/flush-all
+```
+
+- `composer install` aplica alterações ao `composer.lock`.
+- `php yii migrate` aplica **só** as migrações que ainda não estão na base de dados. Podes repetir o comando sem duplicar tabelas ou registos.
+- `php yii rbac/init` sincroniza roles e permissões com o código e também é idempotente.
+- `php yii cache/flush-all` limpa a cache de esquema e de configuração; evita erros estranhos depois de mudar colunas ou tabelas.
+- Se não houver alterações, os comandos não modificam nada.
+
+Confirma que ficou tudo atualizado:
+
+```powershell
+php yii migrate/history
+php yii migrate/new
+```
+
+`migrate/new` deve terminar com `No new migrations found. Your system is up-to-date.` — se listar migrações, volta a correr `php yii migrate --interactive=0`.
+
+### Reverter ou repetir migrações
+
+```powershell
+php yii migrate/down 1   # desfaz a última migração
+php yii migrate/redo 1   # desfaz e volta a aplicar a última
+```
+
+!!! warning "`migrate/fresh` apaga dados"
+    `php yii migrate/fresh` elimina **todas** as tabelas e recria a base de dados de zero. Usa-o apenas quando puderes perder os dados locais.
+
+## 11. Documentação
 
 O site também está publicado em <https://astonrasec.github.io/VolLink/>. Para o editar localmente, abre um terminal na **raiz do repositório** e entra em `Docs`:
 
@@ -357,7 +390,7 @@ python -m mkdocs build
 !!! note "Deploy"
     O site de produção é atualizado automaticamente pelo workflow `.github/workflows/docs.yml` em cada push para `main`. Não é preciso fazer deploy manual.
 
-## 11. Fluxo de trabalho
+## 12. Fluxo de trabalho
 
 ```bash
 git switch main
@@ -375,7 +408,7 @@ git push -u origin feat/nome-da-tarefa
 - O merge em `main` atualiza a documentação publicada.
 - **Nunca** comites `vendor/`, `*-local.php`, `Docs/site/` ou `.venv/`.
 
-## 12. Problemas comuns
+## 13. Problemas comuns
 
 | Sintoma | Causa provável | Solução |
 |---|---|---|
@@ -385,14 +418,17 @@ git push -u origin feat/nome-da-tarefa
 | `Unknown database 'vollink_db'` | Base de dados não criada | Repete o passo 5 |
 | `Access denied for user 'vollink'` | Credenciais erradas | Confirma o utilizador e a palavra-passe no `main-local.php` |
 | `No such file or directory` (MySQL) | Socket em falta no Linux | Usa `mysql:host=127.0.0.1` no DSN ou inicia o MySQL |
-| `The directory is not writable` | `runtime/` ou `web/assets/` sem permissões | `php init` outra vez ou ajusta as permissões (passo 8B) |
+| `The directory is not writable` | `runtime/` ou `web/assets/` sem permissões | `php init` outra vez ou ajusta as permissões (passo 8, Opção B) |
+| `Unknown column ...` ou `Table ... doesn't exist` | Migrações em falta na base de dados | Corre `php yii migrate --interactive=0` (passo 10) |
+| `Class ... not found` depois de um `git pull` | Dependências desatualizadas | Corre `composer install` (passo 10) |
+| Roles ou permissões em falta | RBAC não sincronizado com o código | Corre `php yii rbac/init` (passo 10) |
 | `404` em `/vollink/site/login` | URLs amigáveis desligadas | Usa `/vollink/index.php?r=site%2Flogin` ou ativa o bloco opcional |
 | `Port 8080 already in use` | Porta ocupada | Usa `8082`/`8083` nos comandos `php yii serve` |
 | `No module named mkdocs` | Venv não ativado | Usa `Docs\.venv\Scripts\python` (Windows) ou `Docs/.venv/bin/python` (Linux) |
 | `Activate.ps1 cannot be loaded` | Política do PowerShell | Usa `Docs\.venv\Scripts\python` diretamente, sem ativar |
 | `auth_item` não existe | RBAC migrations não correram | Executa o segundo comando do passo 7 |
 
-## 13. API e Android
+## 14. API e Android
 
 A API REST e a app Android ainda não estão no repositório. O âmbito, os ecrãs e os endpoints estão definidos em:
 
