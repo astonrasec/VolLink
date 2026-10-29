@@ -1,0 +1,15 @@
+{
+  "name": "VolLink_Web",
+  "engine": {
+    "php": "8.4",
+    "extensions": [],
+    "display_errors": true,
+    "memory_limit": null
+  },
+  "server": {
+    "root": "frontend/web/",
+    "port": 8080,
+    "hot_reload": true,
+    "tls": true
+  }
+}
