@@ -9,6 +9,8 @@ $params = array_merge(
 
 return [
     'id' => 'app-backend',
+    'name' => 'VolLink Back-office',
+    'language' => 'pt-PT',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
