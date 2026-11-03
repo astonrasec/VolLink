@@ -308,6 +308,8 @@ php yii rbac/assign utilizador@exemplo.pt sysAdmin
 php yii rbac/check utilizador@exemplo.pt accessBackoffice
 ```
 
+O dashboard e as listas do back-office exigem a permissão `accessBackoffice`, que só o role `sysAdmin` tem. Sem esse role, o login funciona mas o acesso é negado.
+
 ## 10. Atualizar o projeto e a base de dados
 
 Quando fizeres `git pull`, ou mudares para uma branch com migrações novas, atualiza as dependências e a base de dados. Começa na **raiz do repositório** e corre o resto em `VolLink_Web`:

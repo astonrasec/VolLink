@@ -75,6 +75,8 @@ chore(deps): track composer.lock
 
 - Não instalar nem copiar para o repositório outros templates, temas ou *dashboards*.
 - Quem usar um template do HTML Codex mantém o crédito do autor no rodapé (licença CC BY 4.0).
+- As páginas dos mockups já existem em `backend/views` e `frontend/views` e leem `MockData`. Ao criar o modelo de uma funcionalidade, o controlador passa a fazer a query e o método do `MockData` que deixou de ser usado apaga-se.
+- No front-office, os ícones são SVG inline (`frontend\helpers\Icon`) e o estilo está em `frontend/web/css/site.css`; não se acrescentam bibliotecas de CSS ou de ícones.
 - Detalhes em [Arquitetura](arquitetura.md#templates-de-interface).
 
 ## Migrações

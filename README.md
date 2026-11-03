@@ -188,7 +188,7 @@ Páginas principais:
 | Área | Estado |
 |---|---|
 | Esqueleto Yii2 Advanced | ✅ |
-| Templates de interface | ⏳ por integrar (o esqueleto ainda usa o layout por omissão do Yii2) |
+| Templates de interface | ✅ AdminLTE 3 no back-office e HTML e CSS no front-office, com as páginas dos mockups e dados de exemplo |
 | Documentação e mockups | ✅ MkDocs + Material, 33 imagens, publicado no GitHub Pages |
 | Esquema da base de dados | ✅ 11 migrações do projeto + 4 de RBAC; 12 tabelas, colunas do núcleo, candidatura por turno e colunas de UI |
 | RBAC | ✅ 3 roles, 12 permissões e regra `eventOwner`; executar `rbac/init` para sincronizar a BD |

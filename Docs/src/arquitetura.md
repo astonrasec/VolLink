@@ -122,7 +122,7 @@ A interface web só pode usar os templates abaixo. Não se acrescentam outros te
 - O **Yii2 Advanced** é apenas o esqueleto da aplicação (pastas `frontend/`, `backend/`, `common/`, ...). Não conta como template de interface.
 - **Back-office:** o pacote instala-se com `composer require "hail812/yii2-adminlte3:~1.1"`. Traz as vistas, os *assets* e os widgets do AdminLTE 3, que assenta em Bootstrap 4 (`yiisoft/yii2-bootstrap4`).
 - **Front-office:** os templates gratuitos do HTML Codex têm licença CC BY 4.0 e obrigam a manter a ligação de crédito do autor no rodapé (ver a [licença](https://htmlcodex.com/license)).
-- **Estado:** `frontend/` e `backend/` ainda usam o layout por omissão do Yii2 Advanced (Bootstrap 5). A integração dos templates está por fazer.
+- **Estado:** o `backend/` usa o AdminLTE 3 e o `frontend/` usa HTML e CSS próprios (`frontend/web/css/site.css`, ícones SVG em `frontend/helpers/Icon.php`), ambos construídos a partir dos [mockups](mockups.md#onde-esta-cada-ecra). As páginas leem dados de exemplo (`backend/mock/MockData.php` e `frontend/mock/MockData.php`) até existirem os modelos ActiveRecord.
 
 ### Sem `ENUM` do MySQL
 

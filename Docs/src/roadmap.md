@@ -11,6 +11,7 @@
 - [x] Colunas de UI: `shift.name`, `user_details.suspension_reason` e `notification.read_at`
 - [x] Aliases do Apache para `/vollink` e `/vollink-admin`
 - [x] Documentação, diagrama de classes e revisão do documento de especificação
+- [x] Templates de interface: back-office em AdminLTE 3 e front-office em HTML e CSS, com as páginas dos mockups e dados de exemplo
 
 !!! info "RBAC sincronizado"
     `php yii rbac/init` foi executado e `php yii rbac/list` confirma as permissões: a empresa tem as permissões de evento; o voluntário tem `applicationSubmit` e `accessMobile`; o `sysAdmin` tem a moderação.
@@ -45,7 +46,7 @@ Cada linha corresponde a **uma branch** e a **um PR**.
 - Perfil público da empresa.
 - Dashboard da empresa.
 - Back-office.
-- Integração dos templates de interface (ver [Arquitetura](arquitetura.md#templates-de-interface)).
+- Ligar as páginas de interface aos modelos: substituir as chamadas a `MockData` por queries e acrescentar o controlo de acesso do front-office.
 - API REST e app Android.
 
 Ver [Requisitos](requisitos.md) para o âmbito detalhado.
