@@ -45,6 +45,7 @@ Cada linha corresponde a **uma branch** e a **um PR**.
 - Perfil público da empresa.
 - Dashboard da empresa.
 - Back-office.
+- Integração dos templates de interface (ver [Arquitetura](arquitetura.md#templates-de-interface)).
 - API REST e app Android.
 
 Ver [Requisitos](requisitos.md) para o âmbito detalhado.
