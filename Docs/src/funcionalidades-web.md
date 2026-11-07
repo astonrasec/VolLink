@@ -93,6 +93,19 @@ O registo está implementado em `frontend/models/SignupForm.php` e em `frontend/
 - Pesquisa por texto e filtros por **categoria**, **localização** e **intervalo de datas**.
 - Detalhe do evento: descrição, categoria, localização, competências, turnos, vagas e organizador.
 
+!!! success "US1 implementada (web)"
+    O feed e o detalhe público já estão ligados aos modelos:
+
+    - `SiteController::actionIndex` usa `Event::findPublished()`, filtra por `q` (título/descrição), `category`, `location`, `date_from` e `date_to`, e pagina os resultados.
+    - `EventController::actionView` só devolve eventos `PUBLISHED`; um evento `DRAFT` ou inexistente responde `404`.
+    - As vagas são calculadas: `capacity - candidaturas APPROVED`, tanto no evento como em cada turno (`Event::getAvailableSeats()` e `Shift::getAvailableSeats()`).
+    - O detalhe mostra descrição, requisitos (`required_skills`), turnos, vagas e o nome/estado de verificação da empresa.
+
+    Testes: `frontend/tests/Functional/EventFeedCest.php` cobre lista sem autenticação, pesquisa, os três filtros, detalhe e `404` para rascunhos.
+
+!!! warning "Android"
+    A app Android ainda não existe no repositório e o módulo `api/` está planeado (ver [Roadmap](roadmap.md)). O endpoint `GET /api/events` deve reutilizar `Event::findPublished()` para devolver a mesma lista depois da autenticação.
+
 ### Criar e gerir
 
 - A **empresa** cria eventos; o utilizador da empresa que cria o evento torna-se **coordenador do evento**.
@@ -250,6 +263,8 @@ stateDiagram-v2
 | URLs amigáveis | ⏳ |
 | Modelos ActiveRecord (`User`, `UserDetails`, `Event`, `Shift`, `Application`, `Attendance`, `Notification`) | ✅ |
 | Registo de conta de empresa (US10) | ✅ |
+| Feed público e detalhe de eventos (US1) | ✅ |
+| Pesquisa e filtros por categoria, localização e datas | ✅ |
 | Verificação de email | ✅ |
 | Login por email ou username | ✅ |
 | Perfil | ⏳ |

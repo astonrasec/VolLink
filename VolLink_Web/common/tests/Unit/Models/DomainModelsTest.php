@@ -63,6 +63,30 @@ final class DomainModelsTest extends Unit
         verify($event->getApplications()->count())->equals(0);
         verify($shift->event->id)->equals($event->id);
         verify($this->_company->getCreatedEvents()->count())->equals(1);
+        verify($event->getOrganizerName())->equals('empresa.teste');
+        verify($event->isOrganizerVerified())->false();
+    }
+
+    public function testPublishedEventsAndAvailableSeats(): void
+    {
+        $published = $this->createEvent(['status' => Event::STATUS_PUBLISHED]);
+        $this->createEvent(['status' => Event::STATUS_DRAFT, 'title' => 'Rascunho']);
+
+        verify(Event::findPublished()->count())->equals(1);
+        verify(Event::publishedCategories())->equals(['Ambiente']);
+
+        $shift = $this->createShift($published);
+
+        $application = new Application([
+            'user_id' => $this->_volunteer->id,
+            'event_id' => $published->id,
+            'shift_id' => $shift->id,
+            'status' => Application::STATUS_APPROVED,
+        ]);
+        verify($application->save())->true();
+
+        verify($published->getAvailableSeats())->equals(49);
+        verify($shift->getAvailableSeats())->equals(19);
     }
 
     public function testShiftMustStayInsideEventDates(): void
@@ -270,6 +294,10 @@ final class DomainModelsTest extends Unit
         verify($this->_company->details?->id)->equals($details->id);
         verify($this->_company->isCompany())->true();
         verify($this->_company->canCreateEvents())->true();
+
+        $event = $this->createEvent();
+        verify($event->getOrganizerName())->equals('Empresa Teste');
+        verify($event->isOrganizerVerified())->true();
     }
 
     private function createEvent(array $attributes = []): Event

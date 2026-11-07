@@ -21,6 +21,9 @@ Como Visitante, quero explorar a lista de eventos publicados para encontrar inic
 
 **Requisitos:** `RF-FO-04`, `RF-FO-06`, `RF-AM-02`, `RF-AM-04`, `RF-AM-10`
 
+!!! success "Estado: web implementada"
+    O feed e o detalhe público estão ligados aos modelos `Event`/`Shift`. A parte Android depende do módulo `api/` e da app, ainda planeados. Ver [Funcionalidades Web](funcionalidades-web.md#feed-e-pesquisa).
+
 ## US2 — Registar conta de voluntário
 
 **Story Points:** 5 · **Plataforma:** Web + Android

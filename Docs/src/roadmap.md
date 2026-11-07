@@ -18,6 +18,7 @@
 - [x] Modelos ActiveRecord do domínio: `UserDetails`, `Event`, `Shift`, `Application`, `Attendance` e `Notification`
 - [x] Relações nos dois sentidos, constantes de estado e timestamps nos modelos
 - [x] Validações cruzadas: turno dentro do evento, candidatura no evento do turno e presença no turno da candidatura
+- [x] US1 (web) — feed público de eventos `PUBLISHED`, pesquisa, filtros por categoria/localização/datas, paginação e detalhe com turnos, vagas e requisitos
 
 !!! info "RBAC sincronizado"
     `php yii rbac/init` foi executado e `php yii rbac/list` confirma as permissões: a empresa tem as permissões de evento; o voluntário tem `applicationSubmit` e `accessMobile`; o `sysAdmin` tem a moderação.
@@ -45,6 +46,7 @@ Cada linha corresponde a **uma branch** e a **um PR**.
 
 ### Funcionalidades
 
+- US1 Android: expor o feed em `GET /api/events` e ligar a app Android (depende de `feat/api` e `feat/android`).
 - Recuperação e alteração de palavra-passe.
 - Aprovação/rejeição de empresas no back-office (US8); a US10 já cria a conta em `PENDING`.
 - CRUD de eventos, turnos, candidaturas e presenças.
