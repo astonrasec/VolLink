@@ -3,107 +3,54 @@
 declare(strict_types=1);
 
 /** @var yii\web\View $this */
-/** @var yii\bootstrap5\ActiveForm $form */
 /** @var \common\models\LoginForm $model */
 
-use yii\bootstrap5\ActiveForm;
-use yii\bootstrap5\Html;
+use yii\bootstrap4\ActiveForm;
+use yii\bootstrap4\Html;
 
-$this->title = 'Sign in to your account';
-$htmlIcon = <<<HTML
-{label}<div class="input-group"><span class="input-group-text" aria-hidden="true">%s</span>{input}</div>{error}{hint}
-HTML;
-$labelOptions = ['class' => 'form-label fw-semibold small'];
+$this->title = 'Entrar';
+$errorOptions = ['class' => 'invalid-feedback d-block'];
+$passwordTemplate = '{label}<div class="vl-password">{input}'
+    . '<button type="button" class="vl-eye" data-toggle-password="#loginform-password" aria-label="Mostrar ou esconder a palavra-passe">'
+    . '<i class="far fa-eye"></i></button></div>{error}';
 ?>
-<div class="card border-0 overflow-hidden login-split-card">
-    <div class="row g-0">
-
-        <!-- Brand panel -->
-        <div class="col-md-5 d-none d-md-flex login-brand-panel text-white">
-            <div class="d-flex flex-column justify-content-between p-4 p-lg-5 w-100">
-                <div>
-                    <?= Html::img(
-                        Yii::getAlias('@web/images/yii3_full_white_for_dark.svg'),
-                        [
-                            'alt' => 'Yii Framework',
-                            'class' => 'mb-4',
-                            'height' => 40,
-                        ],
-                    ) ?>
-                </div>
-                <div>
-                    <h2 class="fw-bold mb-3 login-brand-title">
-                        Backend<br>Administration
-                    </h2>
-                    <p class="opacity-75 mb-0 login-brand-text">
-                        Manage your Yii2 application with the advanced admin dashboard.
-                    </p>
-                </div>
-            </div>
+<div class="vl-login">
+    <section class="vl-login-brand">
+        <div class="vl-login-logo">
+            <strong>VolLink</strong>
+            <span class="vl-outline-badge">Back-office</span>
         </div>
 
-        <!-- Form panel -->
-        <div class="col-md-7">
-            <div class="p-4 p-lg-5">
-                <div class="text-center mb-4">
-                    <!-- Mobile-only logo -->
-                    <div class="d-md-none mb-3">
-                        <?= Html::img(
-                            Yii::getAlias('@web/images/yii3_full_black_for_light.svg'),
-                            [
-                                'alt' => 'Yii Framework',
-                                'class' => 'login-mobile-logo',
-                                'height' => 36,
-                            ],
-                        ) ?>
-                    </div>
-                    <h1 class="h3 fw-bold mb-1"><?= Html::encode($this->title) ?></h1>
-                    <p class="text-body-secondary small">Enter your credentials to access the admin panel</p>
-                </div>
-
-                <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
-
-                <div class="mb-3">
-                    <?= $form->field($model, 'username', [
-                        'options' => ['class' => 'mb-0'],
-                        'template' => sprintf($htmlIcon, '&#128100;'),
-                        'inputOptions' => [
-                            'class' => 'form-control',
-                            'placeholder' => 'username',
-                            'autofocus' => true,
-                        ],
-                    ])->textInput()->label('Your Username', $labelOptions) ?>
-                </div>
-
-                <div class="mb-3">
-                    <?= $form->field($model, 'password', [
-                        'options' => ['class' => 'mb-0'],
-                        'template' => sprintf($htmlIcon, '&#128274;'),
-                        'inputOptions' => [
-                            'class' => 'form-control',
-                            'placeholder' => 'Password',
-                        ],
-                    ])->passwordInput()->label('Your Password', $labelOptions) ?>
-                </div>
-
-                <div class="mb-4">
-                    <?= $form->field($model, 'rememberMe')->checkbox() ?>
-                </div>
-
-                <div class="d-grid">
-                    <?= Html::submitButton(
-                        'Sign in',
-                        [
-                            'class' => 'btn login-btn btn-lg rounded-3 text-white',
-                            'name' => 'login-button',
-                        ],
-                    ) ?>
-                </div>
-
-                <?php ActiveForm::end(); ?>
-
-            </div>
+        <div>
+            <h1>Gestão de voluntariado</h1>
+            <p>Acesso reservado à equipa de administração.</p>
         </div>
 
-    </div>
+        <small>VolLink · Back-office · <?= date('Y') ?></small>
+    </section>
+
+    <section class="vl-login-panel">
+        <div class="vl-login-card">
+            <h2>Entrar no back-office</h2>
+            <p class="vl-muted">Use a conta de SysAdmin.</p>
+
+            <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]) ?>
+
+            <?= $form->field($model, 'username', ['errorOptions' => $errorOptions])
+                ->textInput(['autofocus' => true, 'placeholder' => 'admin', 'autocomplete' => 'username'])
+                ->label('Utilizador') ?>
+
+            <?= $form->field($model, 'password', ['errorOptions' => $errorOptions, 'template' => $passwordTemplate])
+                ->passwordInput(['placeholder' => 'Introduza a palavra-passe', 'autocomplete' => 'current-password'])
+                ->label('Palavra-passe') ?>
+
+            <?= $form->field($model, 'rememberMe')->checkbox()->label('Manter a sessão iniciada') ?>
+
+            <?= Html::submitButton('Entrar', ['class' => 'btn btn-primary btn-block vl-btn-lg', 'name' => 'login-button']) ?>
+
+            <?php ActiveForm::end() ?>
+
+            <p class="vl-login-note"><i class="fas fa-shield-alt"></i> Acesso monitorizado.</p>
+        </div>
+    </section>
 </div>

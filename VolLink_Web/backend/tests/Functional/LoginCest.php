@@ -22,12 +22,13 @@ final class LoginCest
     public function loginUser(FunctionalTester $I): void
     {
         $I->amOnRoute('/site/login');
-        $I->fillField('Your Username', 'erau');
-        $I->fillField('Your Password', 'password_0');
+        $I->fillField('LoginForm[username]', 'erau');
+        $I->fillField('LoginForm[password]', 'password_0');
         $I->click('login-button');
 
-        $I->seeLink('Logout (erau)');
-        $I->dontSeeLink('Login');
-        $I->dontSeeLink('Signup');
+        // O utilizador de teste não tem a permissão accessBackoffice: a sessão inicia-se,
+        // mas o dashboard é-lhe negado. Basta confirmar que saiu do formulário de login.
+        $I->dontSeeElement('#login-form');
+        $I->seeLink('Sair');
     }
 }

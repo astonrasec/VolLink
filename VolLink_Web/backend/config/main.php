@@ -9,11 +9,16 @@ $params = array_merge(
 
 return [
     'id' => 'app-backend',
+    'name' => 'VolLink Back-office',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [
+        'assetManager' => [
+            // Acrescenta ?v=<data de alteração> aos URLs de CSS e JS: o browser carrega sempre a versão nova.
+            'appendTimestamp' => true,
+        ],
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],

@@ -165,6 +165,43 @@ Referência visual do MVP do VolLink: a empresa organiza, o voluntário particip
 !!! info "AN-09 — Configuração do servidor"
     Menu técnico exigido pelo AMSI: define o URL da API, testa a ligação, guarda em `SharedPreferences` e limpa a cache SQLite local.
 
+## Onde está cada ecrã
+
+Os ecrãs web já existem na aplicação, com dados de exemplo. Enquanto os URLs amigáveis não estiverem ativos, abrem-se com `index.php?r=<rota>`.
+
+**Back-office** (`/vollink-admin`, AdminLTE 3):
+
+| Ecrã | Rota | Vista |
+|---|---|---|
+| BO-AUTH-01 | `site/login` | `backend/views/site/login.php` |
+| BO-DASH-01 | `site/index` | `backend/views/site/index.php` |
+| BO-USR-01 | `user/index` | `backend/views/user/index.php` |
+| BO-EMP-01 | `company/index` | `backend/views/company/index.php` |
+| BO-EVT-01 | `event/index` | `backend/views/event/index.php` |
+
+**Front-office** (`/vollink`, HTML e CSS):
+
+| Ecrã | Rota | Vista |
+|---|---|---|
+| FO-PUB-01 e FO-VOL-01 | `site/index` | `frontend/views/site/index.php` (o menu muda com o perfil) |
+| FO-AUTH-01 | `site/login` | `frontend/views/site/login.php` |
+| FO-AUTH-02 | `site/signup` | `frontend/views/site/signup.php` |
+| FO-AUTH-03 | `site/resend-verification-email` | `frontend/views/site/resendVerificationEmail.php` |
+| FO-AUTH-04 | `site/request-password-reset` | `frontend/views/site/requestPasswordResetToken.php` |
+| FO-PUB-02 | `event/view&id=1` | `frontend/views/event/view.php` |
+| FO-VOL-03 | `application/index` | `frontend/views/application/index.php` |
+| FO-VOL-04 | `profile/index` | `frontend/views/profile/index.php` |
+| FO-VOL-05 | `notification/index` | `frontend/views/notification/index.php` |
+| FO-EMP-01 | `company/dashboard` | `frontend/views/company/dashboard.php` |
+| FO-EMP-02 | `company/events` | `frontend/views/company/events.php` |
+| FO-EMP-03 | `company/create-event` | `frontend/views/company/create-event.php` |
+| FO-EMP-04A, C, D, E | `company/manage&id=1&tab=resumo`, `candidaturas`, `presencas`, `relatorio` | `frontend/views/company/manage.php` e `_manage-*.php` |
+| FO-EMP-05 | `company/profile` | `frontend/views/company/profile.php` |
+| FO-EMP-06 | `company/edit-profile` | `frontend/views/company/edit-profile.php` |
+
+!!! note "Ainda por ligar"
+    As páginas do voluntário e da empresa não têm controlo de acesso nem leem a base de dados: os botões de decisão, gravação e candidatura estão por ligar às funcionalidades de cada branch. Cada controlador tem um `TODO` com a branch responsável.
+
 ## Ver também
 
 - [Funcionalidades Web](funcionalidades-web.md)

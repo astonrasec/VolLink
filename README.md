@@ -11,7 +11,7 @@ O VolLink liga voluntários, empresas e organizações a eventos de voluntariado
 | **Para quem** | Visitantes, voluntários, empresas, coordenadores e SysAdmin | Voluntários |
 | **O que faz** | Front-office completo + back-office | Consultar eventos, candidatar-se, cancelar, ver histórico/horas, notificações e perfil |
 | **O que não faz** | — | Criar eventos, gerir turnos, aprovar candidaturas, back-office, empresa |
-| **Stack** | PHP 8.2 + Yii2 + MySQL/MariaDB + Bootstrap 5 | Android Studio + Volley + SQLite + SharedPreferences |
+| **Stack** | PHP 8.2 + Yii2 + MySQL/MariaDB; front-office com HTML Codex ou HTML e CSS; back-office com AdminLTE 3 | Android Studio + Volley + SQLite + SharedPreferences |
 | **Consome** | Base de dados via Yii2 | API REST do VolLink |
 
 ## Funcionalidades
@@ -72,11 +72,14 @@ O VolLink liga voluntários, empresas e organizações a eventos de voluntariado
 | Linguagem | PHP 8.2+ |
 | Framework | Yii2 Advanced (`~2.0.54`) |
 | Base de dados | MySQL / MariaDB — `vollink_db` |
-| Interface web | Bootstrap 5 |
+| Front-office | Template do [htmlcodex.com](https://htmlcodex.com/) ou HTML e CSS |
+| Back-office | [`hail812/yii2-adminlte3`](https://github.com/hail812/yii2-adminlte3) (AdminLTE 3) |
 | Permissões | RBAC com `DbManager` |
 | API | Yii2 REST (`api/`) — planeada |
 | Android | Android Studio, Volley, SQLite, SharedPreferences — planeada |
 | Documentação | MkDocs + Material |
+
+> **Templates de interface:** só são permitidos os dois indicados acima. O Yii2 Advanced é apenas o esqueleto da aplicação. Ver [Arquitetura](Docs/src/arquitetura.md#templates-de-interface).
 
 ## Instalação
 
@@ -185,6 +188,7 @@ Páginas principais:
 | Área | Estado |
 |---|---|
 | Esqueleto Yii2 Advanced | ✅ |
+| Templates de interface | ✅ AdminLTE 3 no back-office e HTML e CSS no front-office, com as páginas dos mockups e dados de exemplo |
 | Documentação e mockups | ✅ MkDocs + Material, 33 imagens, publicado no GitHub Pages |
 | Esquema da base de dados | ✅ 11 migrações do projeto + 4 de RBAC; 12 tabelas, colunas do núcleo, candidatura por turno e colunas de UI |
 | RBAC | ✅ 3 roles, 12 permissões e regra `eventOwner`; executar `rbac/init` para sincronizar a BD |

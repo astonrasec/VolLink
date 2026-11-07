@@ -11,10 +11,15 @@ $params = array_merge(
 
 return [
     'id' => 'app-frontend',
+    'name' => 'VolLink',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
+        'assetManager' => [
+            // Acrescenta ?v=<data de alteração> aos URLs de CSS e JS: o browser carrega sempre a versão nova.
+            'appendTimestamp' => true,
+        ],
         'request' => [
             'csrfParam' => '_csrf-frontend',
         ],

@@ -17,8 +17,8 @@ final class SignupCest
 
     public function signupWithEmptyFields(FunctionalTester $I): void
     {
-        $I->see('Create a new account', 'h1');
-        $I->see('Fill out the fields below to get started');
+        $I->see('Criar conta', 'h2');
+        $I->see('Escolhe como queres usar a VolLink.');
         $I->submitForm($this->formId, []);
         $I->seeValidationError('Username cannot be blank.');
         $I->seeValidationError('Email cannot be blank.');

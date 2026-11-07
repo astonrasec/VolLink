@@ -98,7 +98,7 @@ Esta página é a **fonte de verdade** dos requisitos do MVP. O Word e o site us
 | RNF-12 | A aplicação Android deve funcionar em Android 8 ou superior. | Portabilidade | Alta |
 | RNF-13 | A aplicação Android deve apresentar mensagens de erro claras em português. | Usabilidade | Média |
 | RNF-14 | Os logs de erro não devem conter dados pessoais nem palavras-passe. | Privacidade | Média |
-| RNF-15 | O sistema deve ser desenvolvido em PHP 8.2+ com Yii2 e MySQL/MariaDB; a app Android deve usar Volley, SharedPreferences e SQLite. | Desenvolvimento | Alta |
+| RNF-15 | O sistema deve ser desenvolvido em PHP 8.2+ com Yii2 e MySQL/MariaDB; o front-office deve usar um template do htmlcodex.com ou HTML e CSS e o back-office o template hail812/yii2-adminlte3; a app Android deve usar Volley, SharedPreferences e SQLite. | Desenvolvimento | Alta |
 | RNF-16 | A API deve ser REST/JSON e usar autenticação por token. | Interoperabilidade | Alta |
 | RNF-17 | O projeto Android Studio deve compilar sem erros. | Desenvolvimento | Alta |
 

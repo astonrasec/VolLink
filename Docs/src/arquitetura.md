@@ -110,6 +110,20 @@ A tabela `user` é a do template Yii2 e não é alterada. Todos os dados adicion
 
 Tabelas, colunas e código usam **inglês** e `snake_case` (`event`, `application_deadline`, `confirmed_by_id`). Os textos da interface são em português.
 
+### Templates de interface
+
+A interface web só pode usar os templates abaixo. Não se acrescentam outros temas nem templates.
+
+| Aplicação | Template permitido |
+|---|---|
+| Front-office (`frontend/`) | Um template do [htmlcodex.com](https://htmlcodex.com/) **ou** HTML e CSS |
+| Back-office (`backend/`) | [`hail812/yii2-adminlte3`](https://github.com/hail812/yii2-adminlte3) (AdminLTE 3) |
+
+- O **Yii2 Advanced** é apenas o esqueleto da aplicação (pastas `frontend/`, `backend/`, `common/`, ...). Não conta como template de interface.
+- **Back-office:** o pacote instala-se com `composer require "hail812/yii2-adminlte3:~1.1"`. Traz as vistas, os *assets* e os widgets do AdminLTE 3, que assenta em Bootstrap 4 (`yiisoft/yii2-bootstrap4`).
+- **Front-office:** os templates gratuitos do HTML Codex têm licença CC BY 4.0 e obrigam a manter a ligação de crédito do autor no rodapé (ver a [licença](https://htmlcodex.com/license)).
+- **Estado:** o `backend/` usa o AdminLTE 3 e o `frontend/` usa HTML e CSS próprios (`frontend/web/css/site.css`, ícones SVG em `frontend/helpers/Icon.php`), ambos construídos a partir dos [mockups](mockups.md#onde-esta-cada-ecra). As páginas leem dados de exemplo (`backend/mock/MockData.php` e `frontend/mock/MockData.php`) até existirem os modelos ActiveRecord.
+
 ### Sem `ENUM` do MySQL
 
 Os estados são guardados em colunas `VARCHAR` e definidos como **constantes PHP** nos modelos. Adicionar um estado novo não exige uma migração — basta acrescentar a constante.

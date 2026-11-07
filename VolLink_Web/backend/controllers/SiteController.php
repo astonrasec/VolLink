@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace backend\controllers;
 
+use backend\mock\MockData;
 use common\models\LoginForm;
 use Yii;
 use yii\filters\AccessControl;
@@ -31,9 +32,14 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => ['accessBackoffice'],
                     ],
                 ],
             ],
@@ -59,13 +65,17 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays homepage.
+     * Dashboard com os totais da plataforma (RF-BO-04).
      *
      * @return string
      */
     public function actionIndex(): string
     {
-        return $this->render('index');
+        return $this->render('index', [
+            'stats' => MockData::stats(),
+            'companies' => MockData::pendingCompanies(),
+            'events' => MockData::recentEvents(),
+        ]);
     }
 
     /**

@@ -35,8 +35,8 @@ final class ResendVerificationEmailCest
 
     public function checkPage(FunctionalTester $I): void
     {
-        $I->see('Resend verification email', 'h1');
-        $I->see('Enter your email to receive a new verification link');
+        $I->see('Confirma o teu email', 'h1');
+        $I->see('Enviámos um link de confirmação para o teu email.');
     }
 
     public function checkEmptyField(FunctionalTester $I): void

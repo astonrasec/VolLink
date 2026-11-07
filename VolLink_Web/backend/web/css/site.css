@@ -1,259 +1,698 @@
-main > .container {
-    padding: 70px 15px 20px;
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
+/* Back-office do VolLink: ajustes sobre o AdminLTE 3 (hail812/yii2-adminlte3). */
+
+:root {
+    --vl-teal: #0f766e;
+    --vl-teal-dark: #115e59;
+    --vl-mint: #ccfbf1;
+    --vl-mint-soft: #f0fdfa;
+    --vl-ink: #0f172a;
+    --vl-muted: #64748b;
+    --vl-line: #e2e8f0;
+    --vl-bg: #f8fafc;
+    --vl-radius: 12px;
 }
 
-.not-set {
-    color: var(--bs-danger);
-    font-style: italic;
+body {
+    font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+    color: var(--vl-ink);
+    background: var(--vl-bg);
 }
 
-/* add sorting icons to gridview sort links */
-a.asc:after, a.desc:after {
-    content: '';
-    left: 3px;
-    display: inline-block;
-    width: 0;
-    height: 0;
-    border: solid 5px transparent;
-    margin: 4px 4px 2px 4px;
-    background: transparent;
+.content-wrapper {
+    background: var(--vl-bg);
 }
 
-a.asc:after {
-    border-bottom: solid 7px var(--bs-body-color);
-    border-top-width: 0;
+.vl-content {
+    padding: 1.5rem 1.5rem 2rem;
 }
 
-a.desc:after {
-    border-top: solid 7px var(--bs-body-color);
-    border-bottom-width: 0;
+.vl-muted {
+    color: var(--vl-muted);
 }
 
-.grid-view th {
-    white-space: nowrap;
+/* ---------- Barra superior ---------- */
+
+.vl-topbar {
+    min-height: 76px;
+    padding: 0 1.5rem;
+    background: #fff;
+    border-bottom: 1px solid var(--vl-line);
 }
 
-.hint-block {
-    display: block;
-    margin-top: 5px;
-    color: var(--bs-secondary-color);
+.vl-page-title {
+    margin-left: .75rem;
 }
 
-.error-summary {
-    color: var(--bs-danger-text-emphasis);
-    background: var(--bs-danger-bg-subtle);
-    border-left: 3px solid var(--bs-danger-border-subtle);
-    padding: 10px 20px;
-    margin: 0 0 15px 0;
+.vl-page-title h1 {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.2;
 }
 
-/* align navbar brand baseline with nav links */
-.navbar > .container,
-.navbar > .container-fluid {
-    align-items: baseline;
+.vl-page-title p {
+    margin: 0;
+    color: var(--vl-muted);
+    font-size: .85rem;
 }
 
-/* style navbar logout link color, hover state, and mobile layout */
-.navbar-nav .nav-link.logout {
-    color: var(--bs-navbar-color);
-}
-
-@media (max-width: 767.98px) {
-    .navbar-nav .nav-link.logout {
-        display: block;
-        text-align: left;
-        width: 100%;
-        padding: 10px 0;
-    }
-}
-
-.navbar-nav .nav-link.logout:focus,
-.navbar-nav .nav-link.logout:hover {
-    color: var(--bs-navbar-hover-color);
-}
-
-
-
-/* footer logo: light logo by default (light bg-body-tertiary), dark logo for dark theme */
-.footer-logo-dark { display: none; }
-
-[data-bs-theme="dark"] .footer-logo-light { display: none; }
-[data-bs-theme="dark"] .footer-logo-dark  { display: inline-block; }
-
-/* login inputs: seamless icon inside input (Volt style) */
-.login-split-card .input-group {
-    border: var(--bs-border-width) solid var(--bs-border-color);
-    border-radius: var(--bs-border-radius);
-    overflow: hidden;
-    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-}
-
-.login-split-card .input-group .input-group-text {
-    background: transparent;
-    border: 0;
-    padding-left: 1rem;
-    padding-right: .75rem;
+.vl-user-chip {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: .65rem;
 }
 
-.login-split-card .input-group .form-control {
-    border: 0;
-    background: transparent;
+.vl-user-chip > span:last-child {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+    font-size: .85rem;
 }
 
-.login-split-card .input-group .form-control:focus {
+.vl-user-chip small {
+    color: var(--vl-muted);
+    font-size: .72rem;
+}
+
+/* ---------- Menu lateral ---------- */
+
+.vl-sidebar {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-right: 1px solid var(--vl-line);
+    box-shadow: none !important;
+}
+
+.vl-sidebar .sidebar {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: auto;
+    padding: 0 .75rem .75rem;
+    overflow-x: hidden;
+}
+
+.vl-brand {
+    display: block;
+    height: auto;
+    padding: 1.25rem 1.5rem 1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    border-bottom: 0 !important;
+}
+
+.vl-brand-name {
+    display: block;
+    color: var(--vl-teal);
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.vl-brand-sub {
+    display: block;
+    margin-top: .2rem;
+    color: var(--vl-muted);
+    font-size: .75rem;
+}
+
+.vl-sidebar .nav-sidebar > .nav-item > .nav-link {
+    margin-bottom: .25rem;
+    padding: .6rem .9rem;
+    color: #334155;
+    font-weight: 500;
+    border-radius: 8px;
+}
+
+.vl-sidebar .nav-sidebar > .nav-item > .nav-link:hover {
+    color: var(--vl-ink);
+    background: var(--vl-bg);
+}
+
+.vl-sidebar .nav-sidebar > .nav-item > .nav-link.active {
+    color: var(--vl-teal);
+    font-weight: 600;
+    background: var(--vl-mint);
     box-shadow: none;
 }
 
-.login-split-card .input-group:focus-within {
-    border-color: var(--bs-primary);
-    box-shadow: 0 0 0 .25rem rgba(var(--bs-primary-rgb), .25);
+.vl-sidebar .nav-sidebar .nav-icon {
+    width: 1.6rem;
+    color: inherit;
 }
 
-/* validation styles for browsers that support :has() */
-@supports selector(.input-group:has(.is-invalid)) {
-    /* show validation errors below the input-group */
-    .login-split-card .input-group:has(.is-invalid) ~ .invalid-feedback {
-        display: block;
-        margin-top: .35rem;
-        margin-bottom: .5rem;
-    }
-
-    /* red border on input-group when invalid */
-    .login-split-card .input-group:has(.is-invalid) {
-        border-color: var(--bs-danger);
-    }
-
-    .login-split-card .input-group:has(.is-invalid):focus-within {
-        box-shadow: 0 0 0 .25rem rgba(var(--bs-danger-rgb), .25);
-    }
+.vl-sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    margin-top: auto;
+    padding: 1rem .5rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+    border-top: 1px solid var(--vl-line);
 }
 
-/* fallback validation styles for browsers without :has() support */
-@supports not selector(.input-group:has(.is-invalid)) {
-    .login-split-card .invalid-feedback:not(:empty) {
-        display: block;
-        margin-top: .35rem;
-        margin-bottom: .5rem;
-    }
-
-    .login-split-card .input-group .form-control.is-invalid {
-        border: var(--bs-border-width) solid var(--bs-danger);
-    }
-
-    .login-split-card .input-group .form-control.is-invalid:focus {
-        box-shadow: 0 0 0 .25rem rgba(var(--bs-danger-rgb), .25);
-    }
+.vl-sidebar-user strong {
+    display: block;
+    font-size: .85rem;
 }
 
-/* login split card */
-.login-split-card {
-    border-radius: 1rem;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, .10);
-    background-color: var(--bs-gray-100);
-    width: 100%;
-    max-width: 900px;
+.vl-logout {
+    color: var(--vl-muted);
+    font-size: .78rem;
 }
 
-.login-brand-title {
-    font-size: 1.75rem;
-    line-height: 1.3;
+/* ---------- Cartões e tabelas ---------- */
+
+.card {
+    margin-bottom: 1.25rem;
+    border: 1px solid var(--vl-line);
+    border-radius: var(--vl-radius);
+    box-shadow: none;
 }
 
-.login-brand-text {
-    font-size: .9rem;
+.card-header::before,
+.card-header::after,
+.card-body::before,
+.card-body::after,
+.card-footer::before,
+.card-footer::after {
+    display: none;
 }
 
-.login-brand-panel {
-    background: linear-gradient(135deg, #40B3D8 0%, #3a9cbd 40%, #83C933 100%);
-    position: relative;
-    min-height: 480px;
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    background: #fff;
+    border-bottom: 1px solid var(--vl-line);
+    border-radius: var(--vl-radius) var(--vl-radius) 0 0;
 }
 
-.login-brand-panel::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(circle at 20% 80%, rgba(241, 138, 42, .25) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(131, 201, 51, .2) 0%, transparent 40%);
-    pointer-events: none;
-}
-
-.login-btn {
-    background: linear-gradient(135deg, #40B3D8, #3a9cbd);
-    border: none;
+.card-title {
+    float: none;
+    margin: 0;
+    font-size: 1rem;
     font-weight: 600;
-    letter-spacing: .02em;
-    transition: opacity .2s, transform .1s;
 }
 
-.login-btn:hover {
-    opacity: .9;
-    transform: translateY(-1px);
+.card-footer {
+    padding: .75rem 1.25rem;
+    font-size: .8rem;
+    background: #fff;
+    border-top: 1px solid var(--vl-line);
+    border-radius: 0 0 var(--vl-radius) var(--vl-radius);
 }
 
-.login-btn:active {
-    transform: translateY(0);
+a.vl-stat {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    transition: border-color .15s;
 }
 
-/* dark mode login card */
-[data-bs-theme="dark"] .login-split-card {
-    background-color: var(--bs-body-bg);
-    box-shadow: 0 0 0 1px var(--bs-border-color), 0 4px 24px rgba(0, 0, 0, .4);
+a.vl-stat:hover {
+    color: inherit;
+    border-color: #99f6e4;
 }
 
-[data-bs-theme="dark"] .login-mobile-logo {
-    filter: invert(1);
+.vl-stat .card-body {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 1.25rem;
 }
 
-/* dashboard welcome banner */
-.dashboard-banner {
-    background: linear-gradient(135deg, #83C933 0%, #3a9cbd 40%, #40B3D8 100%);
+.vl-stat-label {
+    display: block;
+    color: var(--vl-muted);
+    font-size: .85rem;
+}
+
+.vl-stat-value {
+    display: block;
+    margin-top: .25rem;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.vl-tile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    font-size: .9rem;
+    border-radius: 10px;
+}
+
+.vl-tile-mint {
+    color: var(--vl-teal);
+    background: var(--vl-mint);
+}
+
+.vl-tile-amber {
+    color: #b45309;
+    background: #fef3c7;
+}
+
+.vl-table {
+    color: var(--vl-ink);
+    font-size: .88rem;
+}
+
+.vl-table thead th {
+    padding: .75rem 1.25rem;
+    color: var(--vl-muted);
+    font-size: .72rem;
+    font-weight: 600;
+    background: var(--vl-bg);
+    border-top: 0;
+    border-bottom: 1px solid var(--vl-line);
+}
+
+.vl-table td {
+    padding: .85rem 1.25rem;
+    vertical-align: middle;
+    border-top: 1px solid var(--vl-line);
+}
+
+.vl-table tbody tr:first-child td {
+    border-top: 0;
+}
+
+.vl-table.table-hover tbody tr:hover {
+    background: var(--vl-mint-soft);
+}
+
+.vl-row {
+    cursor: pointer;
+}
+
+.vl-cell-name {
+    display: inline-flex;
+    align-items: center;
+    gap: .65rem;
+    font-weight: 500;
+}
+
+/* ---------- Pílulas e avatares ---------- */
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .15rem .6rem;
+    font-size: .72rem;
+    font-weight: 600;
+    line-height: 1.5;
+    border-radius: 999px;
+}
+
+.pill-dot {
+    display: inline-block;
+    width: .4rem;
+    height: .4rem;
+    background: currentColor;
+    border-radius: 50%;
+}
+
+.pill-green { color: #166534; background: #dcfce7; }
+.pill-amber { color: #92400e; background: #fef3c7; }
+.pill-red { color: #991b1b; background: #fee2e2; }
+.pill-blue { color: #1e40af; background: #dbeafe; }
+.pill-gray { color: #475569; background: #f1f5f9; }
+
+.avatar {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    color: var(--vl-teal-dark);
+    font-size: .7rem;
+    font-weight: 700;
+    background: var(--vl-mint);
+    border-radius: 50%;
+}
+
+.avatar-lg {
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 1.1rem;
+}
+
+/* ---------- Botões, ligações e filtros ---------- */
+
+.btn {
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+.btn-primary {
+    background: var(--vl-teal);
+    border-color: var(--vl-teal);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:not(:disabled):not(.disabled):active {
+    background: var(--vl-teal-dark);
+    border-color: var(--vl-teal-dark);
+}
+
+.btn-danger {
+    background: #dc2626;
+    border-color: #dc2626;
+}
+
+.btn-outline-secondary {
+    color: var(--vl-ink);
+    background: #fff;
+    border-color: var(--vl-line);
+}
+
+.btn-outline-secondary:hover {
+    color: var(--vl-ink);
+    background: var(--vl-bg);
+    border-color: var(--vl-line);
+}
+
+.form-control:focus,
+.custom-select:focus {
+    border-color: var(--vl-teal);
+    box-shadow: 0 0 0 .2rem rgba(15, 118, 110, .15);
+}
+
+.vl-link {
+    color: var(--vl-teal);
+    font-size: .85rem;
+    font-weight: 600;
+}
+
+.vl-link:hover {
+    color: var(--vl-teal-dark);
+}
+
+.vl-filter .card-body {
+    display: flex;
+    gap: .75rem;
+    padding: 1rem;
+}
+
+.vl-search {
     position: relative;
-}
-
-.dashboard-banner::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background:
-        radial-gradient(circle at 80% 80%, rgba(241, 138, 42, .25) 0%, transparent 50%),
-        radial-gradient(circle at 20% 20%, rgba(131, 201, 51, .2) 0%, transparent 40%);
-    pointer-events: none;
-}
-
-/* centered page layout: error */
-.site-index,
-.site-error {
     flex: 1;
 }
 
-.site-error .site-error-content {
+.vl-search i {
+    position: absolute;
+    top: 50%;
+    left: .9rem;
+    color: #94a3b8;
+    transform: translateY(-50%);
+}
+
+.vl-search .form-control {
+    height: 2.75rem;
+    padding-left: 2.4rem;
+    border-radius: 10px;
+}
+
+.vl-select {
+    width: 12rem;
+    height: 2.75rem;
+    border-radius: 10px;
+}
+
+/* ---------- Painel de detalhe (lado direito) ---------- */
+
+.vl-drawer .modal-dialog {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
     width: 100%;
-    max-width: 90%;
+    max-width: 480px;
+    height: 100%;
+    margin: 0;
 }
 
-@media (min-width: 576px) {
-    .site-error .site-error-content {
-        max-width: 80%;
+.vl-drawer.fade .modal-dialog {
+    transform: translateX(100%);
+    transition: transform .25s ease-out;
+}
+
+.vl-drawer.show .modal-dialog {
+    transform: none;
+}
+
+.vl-drawer .modal-content {
+    height: 100%;
+    border: 0;
+    border-radius: 0;
+}
+
+.vl-drawer-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--vl-line);
+}
+
+.vl-drawer-heading {
+    flex: 1;
+}
+
+.vl-drawer-heading h2 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .6rem;
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.vl-drawer-heading p {
+    margin: .15rem 0 0;
+    color: var(--vl-muted);
+    font-size: .85rem;
+}
+
+.vl-drawer-body {
+    flex: 1;
+    padding: 1.25rem 1.5rem;
+    overflow-y: auto;
+}
+
+.vl-drawer-foot {
+    display: flex;
+    justify-content: flex-end;
+    gap: .6rem;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--vl-line);
+}
+
+.vl-drawer-section {
+    margin: 0 0 .5rem;
+    font-size: .95rem;
+    font-weight: 700;
+}
+
+.vl-detail {
+    margin: 0 0 1.25rem;
+}
+
+.vl-detail > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: .85rem 0;
+    font-size: .88rem;
+    border-bottom: 1px solid var(--vl-line);
+}
+
+.vl-detail dt {
+    color: var(--vl-muted);
+    font-weight: 400;
+}
+
+.vl-detail dd {
+    margin: 0;
+    font-weight: 600;
+    text-align: right;
+}
+
+.vl-shift {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: .6rem;
+    padding: .8rem 1rem;
+    font-size: .85rem;
+    border: 1px solid var(--vl-line);
+    border-radius: 10px;
+}
+
+.vl-shift span:not(.vl-muted) {
+    display: block;
+    color: var(--vl-muted);
+    font-size: .78rem;
+}
+
+/* ---------- Login ---------- */
+
+.vl-login-page {
+    background: var(--vl-bg);
+}
+
+.vl-login {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    min-height: 100vh;
+}
+
+.vl-login-brand {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3.5rem;
+    color: #fff;
+    background: var(--vl-teal);
+}
+
+.vl-login-logo {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+}
+
+.vl-login-logo strong {
+    font-size: 1.6rem;
+}
+
+.vl-outline-badge {
+    padding: .15rem .6rem;
+    font-size: .8rem;
+    border: 1px solid rgba(255, 255, 255, .5);
+    border-radius: 8px;
+}
+
+.vl-login-brand h1 {
+    margin: 0 0 1rem;
+    font-size: 3.2rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.vl-login-brand p {
+    margin: 0;
+    font-size: 1.25rem;
+    opacity: .85;
+}
+
+.vl-login-brand small {
+    opacity: .75;
+}
+
+.vl-login-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.vl-login-card {
+    width: 100%;
+    max-width: 440px;
+    padding: 2.5rem;
+    background: #fff;
+    border: 1px solid var(--vl-line);
+    border-radius: 18px;
+}
+
+.vl-login-card h2 {
+    margin: 0 0 .25rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.vl-login-card label {
+    font-size: .85rem;
+    font-weight: 600;
+}
+
+.vl-login-card .form-control {
+    height: 2.9rem;
+    border-radius: 10px;
+}
+
+.vl-login-card .custom-control-label {
+    font-weight: 400;
+}
+
+.vl-login-card .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: var(--vl-teal);
+    border-color: var(--vl-teal);
+}
+
+.vl-password {
+    position: relative;
+}
+
+.vl-password .form-control {
+    padding-right: 2.8rem;
+}
+
+.vl-eye {
+    position: absolute;
+    top: 50%;
+    right: .4rem;
+    padding: .5rem;
+    color: var(--vl-muted);
+    background: none;
+    border: 0;
+    transform: translateY(-50%);
+}
+
+.vl-btn-lg {
+    height: 3rem;
+    font-size: 1rem;
+}
+
+.vl-login-note {
+    margin: 1.25rem 0 0;
+    color: var(--vl-muted);
+    font-size: .85rem;
+    text-align: center;
+}
+
+@media (max-width: 900px) {
+    .vl-login {
+        grid-template-columns: 1fr;
+    }
+
+    .vl-login-brand {
+        display: none;
     }
 }
 
-@media (min-width: 768px) {
-    .site-error .site-error-content {
-        max-width: 60%;
-    }
+/* ---------- Erro ---------- */
+
+.vl-error {
+    padding: 4rem 1rem;
+    text-align: center;
 }
 
-@media (min-width: 992px) {
-    .site-error .site-error-content {
-        max-width: 50%;
-    }
+.vl-error-code {
+    margin: 0;
+    color: var(--vl-muted);
+    font-size: 5rem;
+    font-weight: 700;
 }
