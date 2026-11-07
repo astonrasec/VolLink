@@ -28,6 +28,7 @@ use yii\db\ActiveRecord;
  * @property string|null $last_login_at
  * @property int $created_at
  * @property int $updated_at
+ * @property-read User|null $user
  */
 class UserDetails extends ActiveRecord
 {

@@ -26,6 +26,10 @@ use yii\web\IdentityInterface;
  * @property int $updated_at
  * @property string $password write-only password
  * @property-read UserDetails|null $details
+ * @property-read Event[] $createdEvents
+ * @property-read Application[] $applications
+ * @property-read Attendance[] $confirmedAttendances
+ * @property-read Notification[] $notifications
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -67,6 +71,38 @@ class User extends ActiveRecord implements IdentityInterface
     public function getDetails(): ActiveQuery
     {
         return $this->hasOne(UserDetails::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Eventos criados pelo utilizador (empresa).
+     */
+    public function getCreatedEvents(): ActiveQuery
+    {
+        return $this->hasMany(Event::class, ['creator_id' => 'id']);
+    }
+
+    /**
+     * Candidaturas submetidas pelo utilizador.
+     */
+    public function getApplications(): ActiveQuery
+    {
+        return $this->hasMany(Application::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Presenças confirmadas pelo utilizador (coordenador).
+     */
+    public function getConfirmedAttendances(): ActiveQuery
+    {
+        return $this->hasMany(Attendance::class, ['confirmed_by_id' => 'id']);
+    }
+
+    /**
+     * Notificações do utilizador.
+     */
+    public function getNotifications(): ActiveQuery
+    {
+        return $this->hasMany(Notification::class, ['user_id' => 'id']);
     }
 
     /**

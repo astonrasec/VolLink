@@ -193,7 +193,7 @@ Páginas principais:
 | Esquema da base de dados | ✅ 11 migrações do projeto + 4 de RBAC; 12 tabelas, colunas do núcleo, candidatura por turno e colunas de UI |
 | RBAC | ✅ 3 roles, 12 permissões e regra `eventOwner`; executar `rbac/init` para sincronizar a BD |
 | URL amigáveis | ⏳ por ativar |
-| Modelos ActiveRecord | ✅ `User`, `UserDetails`, `LoginForm`, `SignupForm` e `VerifyEmailForm` |
+| Modelos ActiveRecord | ✅ `User`, `UserDetails`, `Event`, `Shift`, `Application`, `Attendance` e `Notification`, com relações e validações cruzadas |
 | Registo de conta de empresa (US10) | ✅ tipo de conta, validação de email e estado `PENDING` até aprovação do SysAdmin |
 | Autenticação | 🟡 registo, verificação de email e login por email/username; falta recuperação/alteração de palavra-passe |
 | CRUD de eventos e turnos | ⏳ por criar |

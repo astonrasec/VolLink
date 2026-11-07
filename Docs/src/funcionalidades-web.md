@@ -248,7 +248,7 @@ stateDiagram-v2
 | Migrações do domínio | ✅ |
 | RBAC (3 roles, 12 permissões, `eventOwner`) | ✅ |
 | URLs amigáveis | ⏳ |
-| Modelos ActiveRecord (`User`, `UserDetails`) | ✅ |
+| Modelos ActiveRecord (`User`, `UserDetails`, `Event`, `Shift`, `Application`, `Attendance`, `Notification`) | ✅ |
 | Registo de conta de empresa (US10) | ✅ |
 | Verificação de email | ✅ |
 | Login por email ou username | ✅ |
