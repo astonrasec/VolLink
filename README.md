@@ -196,6 +196,7 @@ Páginas principais:
 | Modelos ActiveRecord | ✅ `User`, `UserDetails`, `Event`, `Shift`, `Application`, `Attendance` e `Notification`, com relações e validações cruzadas |
 | Registo de conta de empresa (US10) | ✅ tipo de conta, validação de email e estado `PENDING` até aprovação do SysAdmin |
 | Autenticação | 🟡 registo, verificação de email e login por email/username; falta recuperação/alteração de palavra-passe |
+| Feed público e detalhe de eventos (US1) | ✅ lista de `PUBLISHED`, pesquisa, filtros por categoria/localização/datas, turnos, vagas e requisitos |
 | CRUD de eventos e turnos | ⏳ por criar |
 | Candidaturas, presenças e notificações | ⏳ por criar |
 | Relatório do evento | ⏳ por criar |

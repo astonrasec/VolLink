@@ -125,6 +125,75 @@ class Event extends ActiveRecord
     }
 
     /**
+     * Eventos publicados, ordenados pela data de início.
+     */
+    public static function findPublished(): ActiveQuery
+    {
+        return static::find()
+            ->where(['status' => self::STATUS_PUBLISHED])
+            ->orderBy(['start_time' => SORT_ASC]);
+    }
+
+    /**
+     * Categorias usadas por eventos publicados.
+     *
+     * @return string[]
+     */
+    public static function publishedCategories(): array
+    {
+        return static::find()
+            ->select('category')
+            ->where(['status' => self::STATUS_PUBLISHED])
+            ->distinct()
+            ->orderBy(['category' => SORT_ASC])
+            ->column();
+    }
+
+    /**
+     * Nome público da empresa que criou o evento.
+     */
+    public function getOrganizerName(): string
+    {
+        $creator = $this->creator;
+
+        if ($creator === null) {
+            return 'Organização';
+        }
+
+        $details = $creator->details;
+
+        return $details !== null ? $details->name : $creator->username;
+    }
+
+    /**
+     * Indica se a empresa organizadora está aprovada (selo “Verificada”).
+     */
+    public function isOrganizerVerified(): bool
+    {
+        $creator = $this->creator;
+
+        return $creator !== null && $creator->details?->isApproved() === true;
+    }
+
+    /**
+     * Número de candidaturas aprovadas no evento.
+     */
+    public function getApprovedApplicationsCount(): int
+    {
+        return (int) $this->getApplications()
+            ->andWhere(['status' => Application::STATUS_APPROVED])
+            ->count();
+    }
+
+    /**
+     * Vagas disponíveis: capacidade do evento menos candidaturas aprovadas.
+     */
+    public function getAvailableSeats(): int
+    {
+        return max(0, (int) $this->capacity - $this->getApprovedApplicationsCount());
+    }
+
+    /**
      * Empresa que criou o evento.
      */
     public function getCreator(): ActiveQuery

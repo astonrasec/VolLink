@@ -100,6 +100,24 @@ class Shift extends ActiveRecord
     }
 
     /**
+     * Número de candidaturas aprovadas no turno.
+     */
+    public function getApprovedApplicationsCount(): int
+    {
+        return (int) $this->getApplications()
+            ->andWhere(['status' => Application::STATUS_APPROVED])
+            ->count();
+    }
+
+    /**
+     * Vagas disponíveis: capacidade do turno menos candidaturas aprovadas.
+     */
+    public function getAvailableSeats(): int
+    {
+        return max(0, (int) $this->capacity - $this->getApprovedApplicationsCount());
+    }
+
+    /**
      * Evento a que o turno pertence.
      */
     public function getEvent(): ActiveQuery

@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace frontend\controllers;
 
+use common\models\Event;
 use common\models\LoginForm;
 use frontend\models\ContactForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
-use frontend\mock\MockData;
 use frontend\models\VerifyEmailForm;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\captcha\CaptchaAction;
+use yii\data\Pagination;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\mail\MailerInterface;
@@ -99,16 +100,73 @@ class SiteController extends Controller
     }
 
     /**
-     * Feed de eventos publicados (RF-FO-04 e RF-FO-06).
+     * Feed público de eventos publicados (RF-FO-04 e RF-FO-06).
      *
      * @return string
      */
     public function actionIndex(): string
     {
-        return $this->render('index', [
-            'events' => MockData::events(),
-            'categories' => array_keys(MockData::categories()),
+        $filters = [
+            'q' => trim((string) Yii::$app->request->get('q', '')),
+            'category' => trim((string) Yii::$app->request->get('category', '')),
+            'location' => trim((string) Yii::$app->request->get('location', '')),
+            'date_from' => trim((string) Yii::$app->request->get('date_from', '')),
+            'date_to' => trim((string) Yii::$app->request->get('date_to', '')),
+        ];
+
+        $query = Event::findPublished();
+
+        if ($filters['q'] !== '') {
+            $query->andWhere([
+                'or',
+                ['like', 'title', $filters['q']],
+                ['like', 'description', $filters['q']],
+            ]);
+        }
+
+        if ($filters['category'] !== '') {
+            $query->andWhere(['category' => $filters['category']]);
+        }
+
+        if ($filters['location'] !== '') {
+            $query->andWhere(['like', 'location', $filters['location']]);
+        }
+
+        $dateFrom = $this->normalizeDate($filters['date_from']);
+        if ($dateFrom !== null) {
+            $query->andWhere(['>=', 'start_time', $dateFrom . ' 00:00:00']);
+        }
+
+        $dateTo = $this->normalizeDate($filters['date_to']);
+        if ($dateTo !== null) {
+            $query->andWhere(['<', 'start_time', date('Y-m-d', strtotime($dateTo . ' +1 day')) . ' 00:00:00']);
+        }
+
+        $pagination = new Pagination([
+            'totalCount' => (int) (clone $query)->count(),
+            'pageSize' => 9,
         ]);
+
+        return $this->render('index', [
+            'events' => $query->offset($pagination->offset)->limit($pagination->limit)->all(),
+            'categories' => Event::publishedCategories(),
+            'filters' => $filters,
+            'pagination' => $pagination,
+        ]);
+    }
+
+    /**
+     * Devolve a data em `Y-m-d` ou `null` quando o valor não é válido.
+     */
+    private function normalizeDate(string $value): ?string
+    {
+        if ($value === '') {
+            return null;
+        }
+
+        $date = \DateTime::createFromFormat('Y-m-d', $value);
+
+        return $date !== false && $date->format('Y-m-d') === $value ? $value : null;
     }
 
     /**

@@ -5,6 +5,9 @@ A aplicação Android do VolLink é **exclusivamente para voluntários**. Consom
 !!! note "Duas unidades curriculares"
     O **website** e o **back-office** são âmbito de PSI. A **app Android** e o **web service REST** são âmbito de AMSI. A app não cria eventos, não gere turnos, não aprova candidaturas e não tem back-office.
 
+!!! warning "Estado da US1 no Android"
+    O feed público já está implementado no website. O módulo `api/` e a app Android ainda não existem no repositório; o futuro `GET /api/events` deve reutilizar `common\models\Event::findPublished()` para devolver a mesma lista após autenticação.
+
 ## Âmbito
 
 | Funcionalidade | Android |
