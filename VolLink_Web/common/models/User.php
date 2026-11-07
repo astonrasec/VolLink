@@ -7,6 +7,7 @@ namespace common\models;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
@@ -24,6 +25,11 @@ use yii\web\IdentityInterface;
  * @property int $created_at
  * @property int $updated_at
  * @property string $password write-only password
+ * @property-read UserDetails|null $details
+ * @property-read Event[] $createdEvents
+ * @property-read Application[] $applications
+ * @property-read Attendance[] $confirmedAttendances
+ * @property-read Notification[] $notifications
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -60,6 +66,74 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Perfil e estado de aprovação do utilizador.
+     */
+    public function getDetails(): ActiveQuery
+    {
+        return $this->hasOne(UserDetails::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Eventos criados pelo utilizador (empresa).
+     */
+    public function getCreatedEvents(): ActiveQuery
+    {
+        return $this->hasMany(Event::class, ['creator_id' => 'id']);
+    }
+
+    /**
+     * Candidaturas submetidas pelo utilizador.
+     */
+    public function getApplications(): ActiveQuery
+    {
+        return $this->hasMany(Application::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Presenças confirmadas pelo utilizador (coordenador).
+     */
+    public function getConfirmedAttendances(): ActiveQuery
+    {
+        return $this->hasMany(Attendance::class, ['confirmed_by_id' => 'id']);
+    }
+
+    /**
+     * Notificações do utilizador.
+     */
+    public function getNotifications(): ActiveQuery
+    {
+        return $this->hasMany(Notification::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Indica se a conta pertence a uma empresa.
+     */
+    public function isCompany(): bool
+    {
+        return $this->details?->isCompany() ?? false;
+    }
+
+    /**
+     * Uma conta só pode entrar com `status` ativo e, quando tem perfil, com
+     * `account_status` aprovado. Contas sem perfil (por exemplo, o SysAdmin
+     * criado à mão) não têm esta restrição.
+     */
+    public function canLogin(): bool
+    {
+        $details = $this->details;
+
+        return $this->status === self::STATUS_ACTIVE && ($details === null || $details->isApproved());
+    }
+
+    /**
+     * Só uma empresa aprovada pode criar e publicar eventos.
+     */
+    public function canCreateEvents(): bool
+    {
+        return $this->isCompany() && $this->details?->isApproved() === true;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public static function findIdentity($id): User|null
@@ -84,6 +158,22 @@ class User extends ActiveRecord implements IdentityInterface
     public static function findByUsername(string $username): User|null
     {
         return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+    }
+
+    /**
+     * Finds an active user by email or username (MVP: login por email).
+     *
+     * @param string $login email or username
+     * @return static|null
+     */
+    public static function findByLogin(string $login): User|null
+    {
+        $user = static::find()
+            ->where(['status' => self::STATUS_ACTIVE])
+            ->andWhere(['or', ['username' => $login], ['email' => $login]])
+            ->one();
+
+        return $user !== null && $user->canLogin() ? $user : null;
     }
 
     /**

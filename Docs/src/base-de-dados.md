@@ -22,7 +22,7 @@ erDiagram
     user ||--o{ application : submete
     event ||--o{ application : agrupa
     shift ||--o{ application : recebe
-    application ||--o{ attendance : origina
+    application ||--o| attendance : origina
     shift ||--o{ attendance : regista
     user |o--o{ attendance : confirma
     user ||--o{ notification : recebe
@@ -56,7 +56,7 @@ Perfil e estado de aprovação, numa relação **1:1** com `user`.
 |---|---|---|
 | `id` | INT PK | |
 | `user_id` | INT | `UNIQUE`, FK → `user.id` (`CASCADE`) |
-| `name` | VARCHAR(100) | `NOT NULL` |
+| `name` | VARCHAR(100) | `NOT NULL` — nome completo do voluntário ou nome da empresa |
 | `account_type` | VARCHAR(15) | `VOLUNTEER` (default), `COMPANY`, `ADMIN` |
 | `birth_date` | DATE | nullable |
 | `skills` | VARCHAR(255) | nullable |
@@ -247,6 +247,49 @@ A migração `m261024_160000_add_ui_columns` acrescenta:
 | `shift.name` | Etiqueta do turno (ex.: “Turno da manhã”) |
 | `user_details.suspension_reason` | Motivo da suspensão |
 | `notification.read_at` | Estado lido/não lido (`NULL` = não lida) |
+
+## Modelos ActiveRecord
+
+As tabelas de domínio já têm classes em `common/models`. Todas usam `TimestampBehavior` para preencher `created_at` e `updated_at`, e os estados são constantes PHP (nunca strings soltas).
+
+| Modelo | Tabela | Constantes | Relações |
+|---|---|---|---|
+| `UserDetails` | `user_details` | `TYPE_*`, `STATUS_*` | `user` |
+| `Event` | `event` | `STATUS_*` (`DRAFT`, `PUBLISHED`, `CANCELLED`, `COMPLETED`, `ARCHIVED`) | `creator`, `shifts`, `applications`, `notifications` |
+| `Shift` | `shift` | — | `event`, `applications`, `attendances` |
+| `Application` | `application` | `STATUS_*` (`PENDING`, `APPROVED`, `REJECTED`, `WITHDRAWN`) | `user`, `event`, `shift`, `attendance` |
+| `Attendance` | `attendance` | — | `application`, `shift`, `confirmedBy` |
+| `Notification` | `notification` | `TYPE_*`, `STATUS_*` (`PENDING`, `SENT`, `FAILED`) | `user`, `event` |
+
+### Relações nos dois sentidos
+
+- `User` ↔ `UserDetails` (`user.details` / `userDetails.user`)
+- `User` ↔ `Event` (`user.createdEvents` / `event.creator`)
+- `Event` ↔ `Shift` (`event.shifts` / `shift.event`)
+- `Shift` ↔ `Application` (`shift.applications` / `application.shift`)
+- `Event` ↔ `Application` (`event.applications` / `application.event`)
+- `Application` ↔ `Attendance` (`application.attendance` / `attendance.application`)
+- `Shift` ↔ `Attendance` (`shift.attendances` / `attendance.shift`)
+- `User` ↔ `Notification` (`user.notifications` / `notification.user`)
+- `Event` ↔ `Notification` (`event.notifications` / `notification.event`)
+- `User` ↔ `Attendance` (`user.confirmedAttendances` / `attendance.confirmedBy`)
+
+### Validações
+
+| Modelo | Regras principais |
+|---|---|
+| `Event` | Campos obrigatórios; `start_time < end_time`; `application_deadline <= start_time`; `capacity >= 1`; `status` numa constante |
+| `Shift` | `start_time < end_time`; turno **dentro das datas do evento**; `capacity >= 1` |
+| `Application` | `(user_id, shift_id)` único; `event_id` tem de coincidir com `shift.event_id`; `status` numa constante |
+| `Attendance` | `(application_id, shift_id)` único; `shift_id` tem de coincidir com `application.shift_id`; `hours_worked >= 0`; `confirmed` exige `confirmed_by_id` e `confirmed_at` |
+| `Notification` | `type` e `status` em constantes; utilizador obrigatório; evento opcional |
+
+Os testes estão em `common/tests/Unit/Models/DomainModelsTest.php`:
+
+```powershell
+cd VolLink_Web/common
+../vendor/bin/codecept run Unit Models/DomainModelsTest.php
+```
 
 ## Migrações
 

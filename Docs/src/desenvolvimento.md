@@ -66,6 +66,19 @@ chore(deps): track composer.lock
 | SQL | Sempre por ActiveRecord ou Query Builder, nunca concatenado |
 | Estados | Constantes PHP no modelo, nunca strings soltas no código |
 
+## Templates de interface
+
+| Aplicação | Template permitido |
+|---|---|
+| `frontend/` | Template do [htmlcodex.com](https://htmlcodex.com/) ou HTML e CSS |
+| `backend/` | [`hail812/yii2-adminlte3`](https://github.com/hail812/yii2-adminlte3) (AdminLTE 3) |
+
+- Não instalar nem copiar para o repositório outros templates, temas ou *dashboards*.
+- Quem usar um template do HTML Codex mantém o crédito do autor no rodapé (licença CC BY 4.0).
+- As páginas dos mockups já existem em `backend/views` e `frontend/views` e leem `MockData`. Ao criar o modelo de uma funcionalidade, o controlador passa a fazer a query e o método do `MockData` que deixou de ser usado apaga-se.
+- No front-office, os ícones são SVG inline (`frontend\helpers\Icon`) e o estilo está em `frontend/web/css/site.css`; não se acrescentam bibliotecas de CSS ou de ícones.
+- Detalhes em [Arquitetura](arquitetura.md#templates-de-interface).
+
 ## Migrações
 
 ```powershell
@@ -101,7 +114,7 @@ Para manter o sistema simples e previsível, uma funcionalidade nova segue sempr
 3. **Modelo** — ActiveRecord em `common/models`, com constantes de estado e relações.
 4. **Permissão** — se a funcionalidade for restrita, acrescentar em `RbacController` (`PERMISSIONS` e `LINKS`) e correr `php yii rbac/init`.
 5. **API** — se a app Android precisar, acrescentar o endpoint em `api/controllers` e documentá-lo em [Requisitos](requisitos.md#endpoints-da-api).
-6. **Web** — controlador e vista em `frontend/` ou `backend/`, com `AccessControl`/`Yii::$app->user->can()`.
+6. **Web** — controlador e vista em `frontend/` ou `backend/`, com `AccessControl`/`Yii::$app->user->can()` e o [template permitido](#templates-de-interface).
 7. **Android** — ecrã, chamada Volley e cache SQLite, se aplicável.
 8. **Testes** — unitário para a regra de negócio e funcional para o fluxo principal.
 9. **Documentação** — atualizar a página de funcionalidades e o roadmap.

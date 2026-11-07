@@ -7,6 +7,7 @@ namespace frontend\tests\Unit\Models;
 use Codeception\Test\Unit;
 use common\fixtures\UserFixture;
 use common\models\User;
+use common\models\UserDetails;
 use frontend\models\SignupForm;
 use frontend\tests\Support\UnitTester;
 use Yii;
@@ -17,6 +18,9 @@ final class SignupFormTest extends Unit
     protected UnitTester $tester;
     public function _before(): void
     {
+        // user_details não tem fixture própria; limpar entre testes.
+        UserDetails::deleteAll();
+
         $this->tester->haveFixtures(
             [
                 'user' => [
@@ -43,7 +47,7 @@ final class SignupFormTest extends Unit
 
         /** @var User $user */
         $user = $this->tester->grabRecord(
-            User::class, 
+            User::class,
             [
                 'username' => 'some_username',
                 'email' => 'some_email@example.com',
@@ -64,6 +68,56 @@ final class SignupFormTest extends Unit
             ->equals('Account registration at ' . Yii::$app->name);
         verify($mail->toString())
             ->stringContainsString($user->verification_token);
+    }
+
+    public function testCompanySignupStaysPending(): void
+    {
+        $model = new SignupForm(
+            [
+                'accountType' => SignupForm::ACCOUNT_COMPANY,
+                'companyName' => 'Associação Horizonte',
+                'email' => 'empresa@example.com',
+                'password' => 'some_password',
+            ],
+        );
+
+        verify($model->signup(Yii::$app->mailer, Yii::$app->params['supportEmail'], Yii::$app->name))
+            ->notEmpty();
+
+        $user = $this->tester->grabRecord(
+            User::class,
+            [
+                'username' => 'empresa@example.com',
+                'email' => 'empresa@example.com',
+                'status' => User::STATUS_INACTIVE,
+            ],
+        );
+
+        $details = $this->tester->grabRecord(UserDetails::class, ['user_id' => $user->id]);
+
+        verify($details->name)->equals('Associação Horizonte');
+        verify($details->account_type)->equals(UserDetails::TYPE_COMPANY);
+        verify($details->account_status)->equals(UserDetails::STATUS_PENDING);
+        verify((bool) $details->email_verified)->false();
+
+        $this->tester->seeEmailIsSent();
+    }
+
+    public function testCompanySignupRequiresName(): void
+    {
+        $model = new SignupForm(
+            [
+                'accountType' => SignupForm::ACCOUNT_COMPANY,
+                'companyName' => '',
+                'email' => 'empresa@example.com',
+                'password' => 'some_password',
+            ],
+        );
+
+        verify($model->signup(Yii::$app->mailer, Yii::$app->params['supportEmail'], Yii::$app->name))
+            ->empty();
+        verify($model->getErrors('companyName'))
+            ->notEmpty();
     }
 
     public function testNotCorrectSignup(): void

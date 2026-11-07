@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace frontend\models;
 
 use common\models\User;
+use common\models\UserDetails;
+use Yii;
 use yii\base\InvalidArgumentException;
 use yii\base\Model;
 
@@ -41,9 +43,43 @@ class VerifyEmailForm extends Model
     public function verifyEmail(): User|null
     {
         $user = $this->_user;
+        $details = $user->details;
 
-        $user->status = User::STATUS_ACTIVE;
+        $transaction = Yii::$app->db->beginTransaction();
 
-        return $user->save(false) ? $user : null;
+        try {
+            if ($details !== null) {
+                $details->email_verified = true;
+
+                // A empresa só fica ativa depois da validação do SysAdmin.
+                if (!$details->isCompany()) {
+                    $details->account_status = UserDetails::STATUS_APPROVED;
+                }
+
+                if (!$details->save(false)) {
+                    $transaction->rollBack();
+
+                    return null;
+                }
+            }
+
+            if ($details === null || !$details->isCompany()) {
+                $user->status = User::STATUS_ACTIVE;
+            }
+
+            if (!$user->save(false)) {
+                $transaction->rollBack();
+
+                return null;
+            }
+
+            $transaction->commit();
+        } catch (\Throwable $e) {
+            $transaction->rollBack();
+
+            throw $e;
+        }
+
+        return $user;
     }
 }

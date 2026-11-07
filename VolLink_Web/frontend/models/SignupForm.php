@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace frontend\models;
 
 use common\models\User;
+use common\models\UserDetails;
 use Yii;
 use yii\base\Model;
 use yii\mail\MailerInterface;
@@ -14,19 +15,38 @@ use yii\mail\MailerInterface;
  */
 class SignupForm extends Model
 {
+    public const ACCOUNT_VOLUNTEER = 'volunteer';
+    public const ACCOUNT_COMPANY = 'company';
+
     public string $username = '';
+    public string $companyName = '';
     public string $email = '';
     public string $password = '';
+    public string $accountType = self::ACCOUNT_VOLUNTEER;
+
     /**
      * {@inheritdoc}
      */
     public function rules(): array
     {
         return [
+            ['accountType', 'required'],
+            ['accountType', 'in', 'range' => [self::ACCOUNT_VOLUNTEER, self::ACCOUNT_COMPANY]],
+
             ['username', 'trim'],
-            ['username', 'required'],
-            ['username', 'unique', 'targetClass' => User::class, 'message' => 'This username has already been taken.'],
-            ['username', 'string', 'min' => 2, 'max' => 255],
+            ['username', 'required', 'when' => fn (): bool => !$this->isCompany()],
+            [
+                'username',
+                'unique',
+                'targetClass' => User::class,
+                'message' => 'This username has already been taken.',
+                'when' => fn (): bool => !$this->isCompany(),
+            ],
+            ['username', 'string', 'min' => 2, 'max' => 255, 'when' => fn (): bool => !$this->isCompany()],
+
+            ['companyName', 'trim'],
+            ['companyName', 'required', 'when' => fn (): bool => $this->isCompany()],
+            ['companyName', 'string', 'max' => 100, 'when' => fn (): bool => $this->isCompany()],
 
             ['email', 'trim'],
             ['email', 'required'],
@@ -37,6 +57,14 @@ class SignupForm extends Model
             ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
         ];
+    }
+
+    /**
+     * Indica se o registo é de uma empresa.
+     */
+    public function isCompany(): bool
+    {
+        return $this->accountType === self::ACCOUNT_COMPANY;
     }
 
     /**
@@ -56,14 +84,36 @@ class SignupForm extends Model
 
         $user = new User();
 
-        $user->username = $this->username;
+        // A empresa não escolhe username: usa o email (único) para entrar.
+        $user->username = $this->isCompany() ? $this->email : $this->username;
         $user->email = $this->email;
 
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
-        return $user->save() && $this->sendEmail($mailer, $user, $supportEmail, $appName);
+        if (!$user->save()) {
+            $this->addErrors($user->getErrors());
+
+            return null;
+        }
+
+        $details = new UserDetails([
+            'user_id' => $user->id,
+            'name' => $this->isCompany() ? $this->companyName : $this->username,
+            'account_type' => $this->isCompany() ? UserDetails::TYPE_COMPANY : UserDetails::TYPE_VOLUNTEER,
+            'account_status' => UserDetails::STATUS_PENDING,
+            'email_verified' => false,
+        ]);
+
+        if (!$details->save()) {
+            $this->addErrors($details->getErrors());
+            $user->delete();
+
+            return null;
+        }
+
+        return $this->sendEmail($mailer, $user, $supportEmail, $appName);
     }
 
     /**

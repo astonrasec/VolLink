@@ -21,7 +21,7 @@ O website do VolLink tem duas áreas:
 
 - Registo com escolha do tipo de conta: **Voluntário** ou **Empresa**.
 - Verificação de email antes da ativação.
-- Login por **email e palavra-passe** (o template Yii2 usa `username`; o MVP passa a usar `email`).
+- Login por **email (ou username)** e palavra-passe.
 - Recuperação de palavra-passe por email.
 - Alteração de palavra-passe com confirmação da atual.
 - Logout.
@@ -36,6 +36,44 @@ O website do VolLink tem duas áreas:
 
 !!! warning "Login de empresa pendente"
     A empresa não pode autenticar-se antes da aprovação. O login tem de validar `user.status` **e** `user_details.account_status`; não basta `user.status = 10`. Ver [Base de dados](base-de-dados.md#estado-do-utilizador).
+
+### Registo de conta de empresa (US10)
+
+O registo está implementado em `frontend/models/SignupForm.php` e em `frontend/views/site/signup.php`.
+
+**Fluxo**
+
+1. O visitante escolhe o tipo de conta: **Voluntário** ou **Empresa**. O JavaScript em `frontend/web/js/site.js` mostra os campos do tipo escolhido.
+2. **Empresa:** nome da empresa, email e palavra-passe são obrigatórios. **Voluntário:** nome, email e palavra-passe são obrigatórios.
+3. O email é validado e tem de ser único (`user.email`).
+4. São criados o `user` (status `9`) e o `user_details` com `account_type`, `account_status = PENDING` e `email_verified = false`. Se o perfil não for gravado, o `user` é removido.
+5. O sistema envia o email de confirmação (`common/mail/emailVerify-html.php` e `emailVerify-text.php`).
+6. Ao abrir o link, o `VerifyEmailForm` marca `email_verified = true`:
+   - **Voluntário:** `user.status = 10` e `account_status = APPROVED`.
+   - **Empresa:** continua `user.status = 9` e `account_status = PENDING`.
+7. O login (`User::findByLogin`) aceita **email ou username** e exige `user.status = 10` **e** `user_details.account_status = APPROVED`, quando existe perfil. Uma empresa `PENDING` não entra.
+8. A empresa só cria e publica eventos depois de o SysAdmin a aprovar (`account_status = APPROVED` e `user.status = 10`), porque a permissão `eventCreate` pertence ao role `empresa`.
+
+**Campos e destino na base de dados**
+
+| Campo no formulário | Destino |
+|---|---|
+| Nome (voluntário) | `user.username` e `user_details.name` |
+| Nome da empresa | `user_details.name`; o `user.username` passa a ser o email |
+| Email | `user.email` (único) |
+| Palavra-passe | `user.password_hash` |
+| Tipo de conta | `user_details.account_type` (`VOLUNTEER` ou `COMPANY`) |
+
+!!! info "Sem migração nova"
+    A tabela `user_details` já tinha `name`, `account_type`, `account_status` e `email_verified`. A US10 reutiliza essas colunas e não altera o esquema.
+
+**Como validar manualmente**
+
+1. Registar uma empresa em `/site/signup` com o tipo de conta **Empresa**.
+2. Confirmar o email através do link gerado em `common/config/main-local.php` (`useFileTransport = true` guarda o email em `frontend/runtime/mail`).
+3. Tentar entrar: o login é recusado enquanto a conta estiver `PENDING`.
+4. Aprovar a empresa: a validação no back-office é a US8 (ainda não implementada), por isso, para já, atualizar `user_details.account_status = 'APPROVED'` e `user.status = 10` na base de dados.
+5. Voltar a entrar com o email e a palavra-passe.
 
 ## 2. Perfil
 
@@ -210,8 +248,10 @@ stateDiagram-v2
 | Migrações do domínio | ✅ |
 | RBAC (3 roles, 12 permissões, `eventOwner`) | ✅ |
 | URLs amigáveis | ⏳ |
-| Modelos ActiveRecord | ⏳ |
-| Autenticação por email | ⏳ |
+| Modelos ActiveRecord (`User`, `UserDetails`, `Event`, `Shift`, `Application`, `Attendance`, `Notification`) | ✅ |
+| Registo de conta de empresa (US10) | ✅ |
+| Verificação de email | ✅ |
+| Login por email ou username | ✅ |
 | Perfil | ⏳ |
 | CRUD de eventos e turnos | ⏳ |
 | Candidaturas | ⏳ |

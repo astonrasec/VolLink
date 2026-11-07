@@ -10,6 +10,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
+use frontend\mock\MockData;
 use frontend\models\VerifyEmailForm;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -84,13 +85,30 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays homepage.
+     * {@inheritdoc}
+     */
+    public function beforeAction($action): bool
+    {
+        $this->layout = match ($action->id) {
+            'login', 'signup' => 'auth',
+            'request-password-reset', 'reset-password', 'resend-verification-email' => 'card',
+            default => 'main',
+        };
+
+        return parent::beforeAction($action);
+    }
+
+    /**
+     * Feed de eventos publicados (RF-FO-04 e RF-FO-06).
      *
      * @return string
      */
     public function actionIndex(): string
     {
-        return $this->render('index');
+        return $this->render('index', [
+            'events' => MockData::events(),
+            'categories' => array_keys(MockData::categories()),
+        ]);
     }
 
     /**
@@ -186,7 +204,12 @@ class SiteController extends Controller
         );
 
         if ($signed) {
-            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+            Yii::$app->session->setFlash(
+                'success',
+                $model->isCompany()
+                    ? 'Conta de empresa criada. Confirma o email e aguarda a validação do SysAdmin.'
+                    : 'Thank you for registration. Please check your inbox for verification email.',
+            );
             return $this->goHome();
         }
 

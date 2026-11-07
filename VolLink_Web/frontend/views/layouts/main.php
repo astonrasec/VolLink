@@ -5,37 +5,40 @@ declare(strict_types=1);
 /** @var yii\web\View $this */
 /** @var string $content */
 
-use common\widgets\Alert;
-use yii\bootstrap5\Breadcrumbs;
+use frontend\assets\AppAsset;
 use yii\helpers\Html;
 
-$this->render('_head');
+AppAsset::register($this);
+$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::getAlias('@web/favicon.ico')]);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>" class="h-100" data-bs-theme="light">
+<html lang="pt-PT">
 <head>
+    <meta charset="<?= Yii::$app->charset ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?php $this->registerCsrfMetaTags() ?>
+    <title><?= Html::encode($this->title) ?> · <?= Html::encode(Yii::$app->name) ?></title>
     <?php $this->head() ?>
-    <title><?= Html::encode($this->title) ?></title>
 </head>
-<body class="d-flex flex-column h-100">
+<body>
 <?php $this->beginBody() ?>
 
-<?= $this->render('_header') ?>
+<?= $this->render('_nav') ?>
 
-<main id="main" class="flex-grow-1" role="main">
-    <div class="container">
-        <?php if (!empty($this->params['breadcrumbs'])): ?>
-            <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
-        <?php endif ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
-    </div>
+<main>
+    <?php if (Yii::$app->session->hasFlash('success') || Yii::$app->session->hasFlash('error')): ?>
+        <div class="container"><?= $this->render('_flash') ?></div>
+    <?php endif ?>
+
+    <?= $content ?>
 </main>
 
-<?= $this->render('_footer') ?>
+<footer class="site-footer">
+    <div class="container">VolLink · <?= date('Y') ?></div>
+</footer>
 
 <?php $this->endBody() ?>
 </body>
 </html>
-<?php $this->endPage() ?>
+<?php $this->endPage();
