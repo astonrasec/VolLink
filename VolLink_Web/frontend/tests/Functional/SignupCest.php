@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace frontend\tests\Functional;
 
 use common\models\User;
+use common\models\UserDetails;
 use frontend\tests\Support\FunctionalTester;
 
 final class SignupCest
@@ -43,7 +44,7 @@ final class SignupCest
     public function signupSuccessfully(FunctionalTester $I): void
     {
         $I->submitForm(
-            $this->formId, 
+            $this->formId,
             [
                 'SignupForm[username]' => 'tester',
                 'SignupForm[email]' => 'tester.email@example.com',
@@ -52,7 +53,7 @@ final class SignupCest
         );
 
         $I->seeRecord(
-            User::class, 
+            User::class,
             [
                 'username' => 'tester',
                 'email' => 'tester.email@example.com',
@@ -62,5 +63,38 @@ final class SignupCest
 
         $I->seeEmailIsSent();
         $I->see('Thank you for registration. Please check your inbox for verification email.');
+    }
+
+    public function signupCompanySuccessfully(FunctionalTester $I): void
+    {
+        $I->submitForm(
+            $this->formId,
+            [
+                'SignupForm[accountType]' => 'company',
+                'SignupForm[companyName]' => 'Associação Horizonte',
+                'SignupForm[email]' => 'empresa@example.com',
+                'SignupForm[password]' => 'tester_password',
+            ],
+        );
+
+        $I->seeRecord(
+            User::class,
+            [
+                'username' => 'empresa@example.com',
+                'email' => 'empresa@example.com',
+                'status' => User::STATUS_INACTIVE,
+            ],
+        );
+        $I->seeRecord(
+            UserDetails::class,
+            [
+                'name' => 'Associação Horizonte',
+                'account_type' => UserDetails::TYPE_COMPANY,
+                'account_status' => UserDetails::STATUS_PENDING,
+            ],
+        );
+
+        $I->seeEmailIsSent();
+        $I->see('Conta de empresa criada. Confirma o email e aguarda a validação do SysAdmin.');
     }
 }

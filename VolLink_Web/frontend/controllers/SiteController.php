@@ -204,7 +204,12 @@ class SiteController extends Controller
         );
 
         if ($signed) {
-            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+            Yii::$app->session->setFlash(
+                'success',
+                $model->isCompany()
+                    ? 'Conta de empresa criada. Confirma o email e aguarda a validação do SysAdmin.'
+                    : 'Thank you for registration. Please check your inbox for verification email.',
+            );
             return $this->goHome();
         }
 

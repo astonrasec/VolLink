@@ -7,6 +7,8 @@ namespace common\tests\Unit\Models;
 use Codeception\Test\Unit;
 use common\fixtures\UserFixture;
 use common\models\LoginForm;
+use common\models\User;
+use common\models\UserDetails;
 use common\tests\Support\UnitTester;
 use Yii;
 
@@ -70,5 +72,36 @@ final class LoginFormTest extends Unit
             ->arrayHasNotKey('password');
         verify(Yii::$app->user->isGuest)
             ->false();
+    }
+
+    public function testPendingCompanyCannotLogin(): void
+    {
+        UserDetails::deleteAll();
+
+        $user = new User([
+            'username' => 'empresa@example.com',
+            'email' => 'empresa@example.com',
+            'status' => User::STATUS_ACTIVE,
+        ]);
+        $user->setPassword('Test1234');
+        $user->generateAuthKey();
+        verify($user->save(false))->true();
+
+        $details = new UserDetails([
+            'user_id' => $user->id,
+            'name' => 'Empresa Teste',
+            'account_type' => UserDetails::TYPE_COMPANY,
+            'account_status' => UserDetails::STATUS_PENDING,
+            'email_verified' => true,
+        ]);
+        verify($details->save(false))->true();
+
+        $model = new LoginForm([
+            'username' => 'empresa@example.com',
+            'password' => 'Test1234',
+        ]);
+
+        verify($model->login())->false();
+        verify(Yii::$app->user->isGuest)->true();
     }
 }

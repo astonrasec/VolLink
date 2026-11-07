@@ -56,7 +56,7 @@ Perfil e estado de aprovação, numa relação **1:1** com `user`.
 |---|---|---|
 | `id` | INT PK | |
 | `user_id` | INT | `UNIQUE`, FK → `user.id` (`CASCADE`) |
-| `name` | VARCHAR(100) | `NOT NULL` |
+| `name` | VARCHAR(100) | `NOT NULL` — nome completo do voluntário ou nome da empresa |
 | `account_type` | VARCHAR(15) | `VOLUNTEER` (default), `COMPANY`, `ADMIN` |
 | `birth_date` | DATE | nullable |
 | `skills` | VARCHAR(255) | nullable |

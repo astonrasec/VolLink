@@ -33,4 +33,21 @@
             event.target.close();
         }
     });
+
+    // No registo, mostrar os campos do tipo de conta escolhido.
+    document.addEventListener('change', function (event) {
+        var radio = event.target;
+        if (!radio.matches || !radio.matches('input[type="radio"][name$="[accountType]"]')) {
+            return;
+        }
+
+        var form = radio.form;
+        if (!form) {
+            return;
+        }
+
+        form.querySelectorAll('[data-account-fields]').forEach(function (group) {
+            group.hidden = group.getAttribute('data-account-fields') !== radio.value;
+        });
+    });
 }());

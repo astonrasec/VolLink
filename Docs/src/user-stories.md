@@ -158,6 +158,9 @@ Como Empresa, quero registar a conta da minha organização para criar e gerir e
 
 **Requisitos:** `RF-FO-16`, `RF-BO-06`
 
+!!! success "Estado: implementado"
+    O registo de empresa está implementado em `SignupForm`, `VerifyEmailForm` e `User::findByLogin`. A conta fica em `user_details.account_status = PENDING` e só entra depois da aprovação do SysAdmin. Ver [Funcionalidades Web](funcionalidades-web.md#registo-de-conta-de-empresa-us10).
+
 ## US11 — Cancelar candidatura a um turno
 
 **Story Points:** 3 · **Plataforma:** Web + Android

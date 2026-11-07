@@ -29,8 +29,8 @@ $passwordTemplate = '{label}<div class="password">{input}'
 ]) ?>
 
 <?= $form->field($model, 'username')
-    ->textInput(['autofocus' => true, 'placeholder' => 'O teu utilizador', 'autocomplete' => 'username'])
-    ->label('Utilizador') ?>
+    ->textInput(['autofocus' => true, 'placeholder' => 'O teu email ou utilizador', 'autocomplete' => 'username'])
+    ->label('Email ou utilizador') ?>
 
 <?= $form->field($model, 'password', ['template' => $passwordTemplate])
     ->passwordInput(['placeholder' => 'Introduz a tua palavra-passe', 'autocomplete' => 'current-password'])
