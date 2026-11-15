@@ -11,6 +11,7 @@ return [
         ],
         'request' => [
             'cookieValidationKey' => 'test',
+            'enableCsrfValidation' => false,
         ],
     ],
 ];
