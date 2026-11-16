@@ -5,6 +5,7 @@ declare(strict_types=1);
 /** @var yii\web\View $this */
 /** @var common\models\User $user */
 
+use common\models\UserDetails;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -29,8 +30,8 @@ $this->title = $user->details?->name ?? $user->username;
                 'username',
                 'email',
                 ['label' => 'Nome', 'value' => $user->details?->name],
-                ['label' => 'Tipo', 'value' => $user->details?->account_type],
-                ['label' => 'Estado da conta', 'value' => $user->details?->account_status],
+                ['label' => 'Tipo', 'value' => UserDetails::typeLabels()[$user->details?->account_type] ?? '-'],
+                ['label' => 'Estado da conta', 'value' => UserDetails::statusLabels()[$user->details?->account_status] ?? '-'],
                 'created_at:datetime',
             ],
         ]) ?>

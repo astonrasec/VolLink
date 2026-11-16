@@ -7,7 +7,6 @@ namespace backend\controllers;
 use backend\models\UserForm;
 use common\models\User;
 use Yii;
-use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -37,12 +36,9 @@ final class UserController extends Controller
 
     public function actionIndex(): string
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => User::find()->with('details')->where(['deleted_at' => null]),
-            'sort' => ['defaultOrder' => ['id' => SORT_DESC]],
-        ]);
+        $users = User::find()->with('details')->where(['deleted_at' => null])->orderBy(['id' => SORT_DESC])->all();
 
-        return $this->render('index', ['dataProvider' => $dataProvider]);
+        return $this->render('index', ['users' => $users]);
     }
 
     public function actionView(int $id): string

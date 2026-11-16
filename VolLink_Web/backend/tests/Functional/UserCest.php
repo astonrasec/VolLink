@@ -58,6 +58,50 @@ final class UserCest
         $I->assertNotNull(Yii::$app->authManager->getAssignment('voluntario', $user->id));
     }
 
+    public function updateUserWithoutPassword(FunctionalTester $I): void
+    {
+        $user = new User(['username' => 'edita', 'email' => 'edita@example.com']);
+        $user->setPassword('password_123');
+        $user->generateAuthKey();
+        $user->save(false);
+        $hash = $user->password_hash;
+
+        $I->amOnRoute('user/update', ['id' => $user->id]);
+        $I->dontSeeElement('#form-user .is-invalid');
+        $I->submitForm('#form-user', [
+            'UserForm[name]' => 'Nome Novo',
+            'UserForm[username]' => 'edita',
+            'UserForm[email]' => 'edita@example.com',
+            'UserForm[password]' => '',
+            'UserForm[role]' => 'empresa',
+            'UserForm[status]' => User::STATUS_ACTIVE,
+        ]);
+
+        $I->seeRecord(UserDetails::class, ['user_id' => $user->id, 'name' => 'Nome Novo']);
+        $user->refresh();
+        $I->assertSame($hash, $user->password_hash);
+        $I->assertNotNull(Yii::$app->authManager->getAssignment('empresa', $user->id));
+    }
+
+    public function cannotChangeOwnRoleOrStatus(FunctionalTester $I): void
+    {
+        $admin = $I->grabFixture('user', 'admin');
+
+        $I->amOnRoute('user/update', ['id' => $admin->id]);
+        $I->submitForm('#form-user', [
+            'UserForm[name]' => 'Admin',
+            'UserForm[username]' => 'admin',
+            'UserForm[email]' => 'admin@example.com',
+            'UserForm[password]' => '',
+            'UserForm[role]' => 'voluntario',
+            'UserForm[status]' => User::STATUS_INACTIVE,
+        ]);
+
+        $I->see('Não podes alterar o teu próprio perfil ou estado.');
+        $I->assertNotNull(Yii::$app->authManager->getAssignment('sysAdmin', $admin->id));
+        $I->seeRecord(User::class, ['id' => $admin->id, 'status' => User::STATUS_ACTIVE]);
+    }
+
     public function deleteUserIsSoft(FunctionalTester $I): void
     {
         $user = new User(['username' => 'rui', 'email' => 'rui@example.com']);
