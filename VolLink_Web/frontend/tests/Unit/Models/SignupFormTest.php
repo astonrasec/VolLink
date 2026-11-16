@@ -104,6 +104,87 @@ final class SignupFormTest extends Unit
         $this->tester->seeEmailIsSent();
     }
 
+    public function testSignupSavesBirthDate(): void
+    {
+        $model = new SignupForm(
+            [
+                'username' => 'com_data',
+                'email' => 'com_data@example.com',
+                'password' => 'some_password',
+                'birthDate' => '2001-07-12',
+            ],
+        );
+
+        verify($model->signup(Yii::$app->mailer, Yii::$app->params['supportEmail'], Yii::$app->name))
+            ->notEmpty();
+
+        $user = $this->tester->grabRecord(User::class, ['username' => 'com_data']);
+        $details = $this->tester->grabRecord(UserDetails::class, ['user_id' => $user->id]);
+
+        verify($details->birth_date)->equals('2001-07-12');
+    }
+
+    public function testBirthDateCannotBeInTheFuture(): void
+    {
+        $model = new SignupForm(
+            [
+                'username' => 'futuro',
+                'email' => 'futuro@example.com',
+                'password' => 'some_password',
+                'birthDate' => date('Y-m-d', strtotime('+1 day')),
+            ],
+        );
+
+        verify($model->validate())->false();
+        verify($model->getErrors())->arrayHasKey('birthDate');
+    }
+
+    public function testSignupWithoutEmailVerification(): void
+    {
+        Yii::$app->params['user.requireEmailVerification'] = false;
+
+        $model = new SignupForm(
+            [
+                'username' => 'sem_email',
+                'email' => 'sem_email@example.com',
+                'password' => 'some_password',
+            ],
+        );
+
+        verify($model->signup(Yii::$app->mailer, Yii::$app->params['supportEmail'], Yii::$app->name))
+            ->notEmpty();
+
+        $user = $this->tester->grabRecord(User::class, ['username' => 'sem_email']);
+        $details = $this->tester->grabRecord(UserDetails::class, ['user_id' => $user->id]);
+
+        verify($user->status)->equals(User::STATUS_ACTIVE);
+        verify($details->account_status)->equals(UserDetails::STATUS_APPROVED);
+        verify($user->canLogin())->true();
+        $this->tester->dontSeeEmailIsSent();
+    }
+
+    public function testCompanyWithoutEmailVerificationWaitsForApproval(): void
+    {
+        Yii::$app->params['user.requireEmailVerification'] = false;
+
+        $model = new SignupForm(
+            [
+                'accountType' => SignupForm::ACCOUNT_COMPANY,
+                'companyName' => 'Grupo Sol',
+                'email' => 'gruposol@example.com',
+                'password' => 'some_password',
+            ],
+        );
+
+        verify($model->signup(Yii::$app->mailer, Yii::$app->params['supportEmail'], Yii::$app->name))
+            ->notEmpty();
+
+        $user = $this->tester->grabRecord(User::class, ['email' => 'gruposol@example.com']);
+
+        verify($user->status)->equals(User::STATUS_ACTIVE);
+        verify($user->canLogin())->false();
+    }
+
     public function testCompanySignupRequiresName(): void
     {
         $model = new SignupForm(

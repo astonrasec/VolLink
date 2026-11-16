@@ -25,6 +25,8 @@ class UserForm extends Model
     public $status = User::STATUS_ACTIVE;
 
     private ?User $user = null;
+    private string $originalRole = '';
+    private int $originalStatus = User::STATUS_ACTIVE;
 
     public function rules(): array
     {
@@ -34,10 +36,16 @@ class UserForm extends Model
             ['email', 'email'],
             ['username', 'string', 'min' => 2, 'max' => 255],
             ['name', 'string', 'max' => 100],
-            ['password', 'required', 'when' => fn() => $this->user === null],
+            [
+                'password',
+                'required',
+                'when' => fn() => $this->user === null,
+                'whenClient' => $this->user === null ? 'function () { return true; }' : 'function () { return false; }',
+            ],
             ['password', 'string', 'min' => 8],
             ['role', 'in', 'range' => array_keys(self::ROLES)],
             ['status', 'in', 'range' => [User::STATUS_ACTIVE, User::STATUS_INACTIVE]],
+            [['role', 'status'], 'validateOwnAccount'],
             ['username', 'validateUnique'],
             ['email', 'validateUnique'],
         ];
@@ -66,6 +74,24 @@ class UserForm extends Model
         }
     }
 
+    /**
+     * Um administrador não pode mudar o próprio perfil nem o próprio estado (perdia o acesso).
+     */
+    public function validateOwnAccount(string $attribute): void
+    {
+        if ($this->user === null || $this->user->id !== Yii::$app->user->id) {
+            return;
+        }
+
+        $changed = $attribute === 'role'
+            ? $this->role !== $this->originalRole
+            : (int) $this->status !== $this->originalStatus;
+
+        if ($changed) {
+            $this->addError($attribute, 'Não podes alterar o teu próprio perfil ou estado.');
+        }
+    }
+
     public function setUser(User $user): void
     {
         $this->user = $user;
@@ -76,6 +102,8 @@ class UserForm extends Model
 
         $roles = array_keys(Yii::$app->authManager->getRolesByUser($user->id));
         $this->role = $roles[0] ?? 'voluntario';
+        $this->originalRole = $this->role;
+        $this->originalStatus = (int) $user->status;
     }
 
     public function save(): ?User

@@ -3,12 +3,19 @@
 declare(strict_types=1);
 
 /** @var yii\web\View $this */
-/** @var array<string, mixed> $volunteer */
+/** @var common\models\User $user */
+/** @var common\models\UserDetails $details */
+/** @var common\models\Attendance[] $attendances */
+/** @var float $total */
+/** @var frontend\models\ChangePasswordForm $passwordForm */
 
 use common\helpers\Ui;
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 $this->title = 'Perfil e histórico';
+
+$birth = $details->birth_date ? date('d/m/Y', strtotime($details->birth_date)) : '-';
 ?>
 <div class="container page">
     <div class="page-head">
@@ -20,21 +27,22 @@ $this->title = 'Perfil e histórico';
 
     <div class="grid-2">
         <section class="card profile-card">
-            <?= Ui::avatar($volunteer['name'], 'xl') ?>
-            <h2><?= Html::encode($volunteer['name']) ?></h2>
-            <p class="muted"><?= Html::encode($volunteer['email']) ?></p>
+            <?= Ui::avatar($details->name, 'xl') ?>
+            <h2><?= Html::encode($details->name) ?></h2>
+            <p class="muted"><?= Html::encode($user->email) ?></p>
 
-            <div class="kv">
-                <small>Competências</small>
-                <?= Html::encode($volunteer['skills']) ?>
-            </div>
-            <div class="kv">
-                <small>Data de nascimento</small>
-                <?= Html::encode($volunteer['birth']) ?>
-            </div>
+            <?php if (!$details->isCompany()): ?>
+                <div class="kv">
+                    <small>Competências</small>
+                    <?= Html::encode($details->skills ?: '-') ?>
+                </div>
+                <div class="kv">
+                    <small>Data de nascimento</small>
+                    <?= Html::encode($birth) ?>
+                </div>
+            <?php endif ?>
 
-            <?php /* TODO(feat/auth): formulário de edição do perfil (RF-FO-05). */ ?>
-            <button class="btn" type="button">Editar perfil</button>
+            <?= Html::a('Editar perfil', ['update'], ['class' => 'btn']) ?>
         </section>
 
         <section class="card history" id="historico">
@@ -43,39 +51,43 @@ $this->title = 'Perfil e histórico';
                     <strong>Histórico</strong>
                     <small>Total de voluntariado</small>
                 </div>
-                <span class="total"><?= Html::encode($volunteer['total']) ?></span>
+                <span class="total"><?= Html::encode(rtrim(rtrim(number_format($total, 1, ',', ''), '0'), ',')) ?> h</span>
             </div>
 
-            <?php foreach ($volunteer['history'] as $entry): ?>
+            <?php foreach ($attendances as $attendance): ?>
                 <div class="history-row">
                     <span class="dot"></span>
                     <div>
-                        <strong><?= Html::encode($entry['event']) ?></strong>
-                        <small><?= Html::encode($entry['meta']) ?></small>
+                        <strong><?= Html::encode($attendance->shift?->event?->title) ?></strong>
+                        <small><?= Html::encode(date('d/m/Y', strtotime((string) $attendance->shift?->start_time))) ?></small>
                     </div>
-                    <span class="hours"><?= Html::encode($entry['hours']) ?></span>
+                    <span class="hours"><?= Html::encode(rtrim(rtrim(number_format((float) $attendance->hours_worked, 1, ',', ''), '0'), ',')) ?> h</span>
                 </div>
             <?php endforeach ?>
+
+            <?php if ($attendances === []): ?>
+                <p class="muted" style="padding: 16px 20px">Ainda não tens participações confirmadas.</p>
+            <?php endif ?>
         </section>
     </div>
 
     <section class="card security">
         <h2>Segurança</h2>
-        <?php /* TODO(feat/auth): alterar a palavra-passe com confirmação da atual (RF-FO-12). */ ?>
-        <form class="security-grid" onsubmit="return false">
-            <div class="field">
-                <label for="password-current">Palavra-passe atual</label>
-                <input id="password-current" class="input" type="password" placeholder="Palavra-passe atual" autocomplete="current-password">
-            </div>
-            <div class="field">
-                <label for="password-new">Nova palavra-passe</label>
-                <input id="password-new" class="input" type="password" placeholder="Nova palavra-passe" autocomplete="new-password">
-            </div>
-            <div class="field">
-                <label for="password-repeat">Confirmar palavra-passe</label>
-                <input id="password-repeat" class="input" type="password" placeholder="Confirmar" autocomplete="new-password">
-            </div>
-            <button class="btn btn-primary" type="submit">Guardar</button>
-        </form>
+        <?php $form = ActiveForm::begin([
+            'id' => 'form-password',
+            'action' => ['password'],
+            'options' => ['class' => 'security-grid'],
+            'fieldConfig' => [
+                'options' => ['class' => 'field'],
+                'template' => "{label}\n{input}\n{error}",
+                'inputOptions' => ['class' => 'input'],
+                'errorOptions' => ['class' => 'invalid-feedback'],
+            ],
+        ]) ?>
+            <?= $form->field($passwordForm, 'current')->passwordInput(['placeholder' => 'Palavra-passe atual', 'autocomplete' => 'current-password']) ?>
+            <?= $form->field($passwordForm, 'new')->passwordInput(['placeholder' => 'Nova palavra-passe', 'autocomplete' => 'new-password']) ?>
+            <?= $form->field($passwordForm, 'repeat')->passwordInput(['placeholder' => 'Confirmar', 'autocomplete' => 'new-password']) ?>
+            <?= Html::submitButton('Guardar', ['class' => 'btn btn-primary']) ?>
+        <?php ActiveForm::end() ?>
     </section>
 </div>

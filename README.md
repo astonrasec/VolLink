@@ -138,6 +138,14 @@ O ficheiro apaga e recria as tabelas (`DROP TABLE IF EXISTS`): importa-o só num
 
 Só o administrador tem acesso ao back-office. Os outros perfis recebem acesso negado.
 
+### Registo e emails
+
+O projeto não envia emails: o mailer grava-os em ficheiro (`useFileTransport`), em `VolLink_Web/frontend/runtime/mail/`.
+
+Para facilitar os testes, o registo **não pede confirmação de email**: uma conta de voluntário fica ativa logo e pode entrar de imediato. Uma conta de empresa fica a aguardar a validação do administrador. Isto é controlado pelo parâmetro `user.requireEmailVerification` em `VolLink_Web/common/config/params.php`. Com o valor `true`, o registo envia o email de verificação (o link está no ficheiro gravado na pasta acima) e a conta só ativa depois de o abrir.
+
+Os endereços usam URLs limpos (`/vollink/site/login`), por isso o Apache precisa do `mod_rewrite` ativo. Cada pasta `web` já tem o `.htaccess` necessário.
+
 ## Estrutura
 
 ```text

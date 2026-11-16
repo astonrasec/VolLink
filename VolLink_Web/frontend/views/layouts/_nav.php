@@ -24,7 +24,7 @@ $demo = [
 $userName = $explicit
     ? $demo[$mode]['name']
     : (string) (Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->username);
-$alerts = $demo[$mode]['alerts'] ?? 0;
+$alerts = $explicit ? ($demo[$mode]['alerts'] ?? 0) : 0;
 $route = (string) Yii::$app->controller?->route;
 
 // [rótulo, rota, prefixos de rota que a marcam como atual, avisos por ler]

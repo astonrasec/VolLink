@@ -20,6 +20,7 @@ class SignupForm extends Model
 
     public string $username = '';
     public string $companyName = '';
+    public string $birthDate = '';
     public string $email = '';
     public string $password = '';
     public string $accountType = self::ACCOUNT_VOLUNTEER;
@@ -34,7 +35,12 @@ class SignupForm extends Model
             ['accountType', 'in', 'range' => [self::ACCOUNT_VOLUNTEER, self::ACCOUNT_COMPANY]],
 
             ['username', 'trim'],
-            ['username', 'required', 'when' => fn (): bool => !$this->isCompany()],
+            [
+                'username',
+                'required',
+                'when' => fn (): bool => !$this->isCompany(),
+                'whenClient' => $this->clientWhen(false),
+            ],
             [
                 'username',
                 'unique',
@@ -42,11 +48,40 @@ class SignupForm extends Model
                 'message' => 'This username has already been taken.',
                 'when' => fn (): bool => !$this->isCompany(),
             ],
-            ['username', 'string', 'min' => 2, 'max' => 255, 'when' => fn (): bool => !$this->isCompany()],
+            [
+                'username',
+                'string',
+                'min' => 2,
+                'max' => 255,
+                'when' => fn (): bool => !$this->isCompany(),
+                'whenClient' => $this->clientWhen(false),
+            ],
 
             ['companyName', 'trim'],
-            ['companyName', 'required', 'when' => fn (): bool => $this->isCompany()],
-            ['companyName', 'string', 'max' => 100, 'when' => fn (): bool => $this->isCompany()],
+            [
+                'companyName',
+                'required',
+                'when' => fn (): bool => $this->isCompany(),
+                'whenClient' => $this->clientWhen(true),
+            ],
+            [
+                'companyName',
+                'string',
+                'max' => 100,
+                'when' => fn (): bool => $this->isCompany(),
+                'whenClient' => $this->clientWhen(true),
+            ],
+
+            ['birthDate', 'date', 'format' => 'php:Y-m-d', 'skipOnEmpty' => true],
+            [
+                'birthDate',
+                'compare',
+                'compareValue' => date('Y-m-d'),
+                'operator' => '<=',
+                'message' => 'A data de nascimento não pode ser no futuro.',
+                'when' => fn (): bool => $this->birthDate !== '',
+                'whenClient' => 'function () { return false; }',
+            ],
 
             ['email', 'trim'],
             ['email', 'required'],
@@ -57,6 +92,16 @@ class SignupForm extends Model
             ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
         ];
+    }
+
+    /**
+     * Condição no browser: só valida o campo que está visível para o tipo de conta escolhido.
+     */
+    private function clientWhen(bool $company): string
+    {
+        $value = $company ? self::ACCOUNT_COMPANY : self::ACCOUNT_VOLUNTEER;
+
+        return "function () { return $('input[name=\"SignupForm[accountType]\"]:checked').val() === '{$value}'; }";
     }
 
     /**
@@ -102,6 +147,7 @@ class SignupForm extends Model
             'user_id' => $user->id,
             'name' => $this->isCompany() ? $this->companyName : $this->username,
             'account_type' => $this->isCompany() ? UserDetails::TYPE_COMPANY : UserDetails::TYPE_VOLUNTEER,
+            'birth_date' => !$this->isCompany() && $this->birthDate !== '' ? $this->birthDate : null,
             'account_status' => UserDetails::STATUS_PENDING,
             'email_verified' => false,
         ]);
@@ -117,6 +163,18 @@ class SignupForm extends Model
         $role = $auth->getRole($this->isCompany() ? 'empresa' : 'voluntario');
         if ($role !== null) {
             $auth->assign($role, $user->id);
+        }
+
+        if (!Yii::$app->params['user.requireEmailVerification']) {
+            $user->status = User::STATUS_ACTIVE;
+            $user->save(false, ['status']);
+
+            if (!$this->isCompany()) {
+                $details->account_status = UserDetails::STATUS_APPROVED;
+                $details->save(false, ['account_status']);
+            }
+
+            return true;
         }
 
         return $this->sendEmail($mailer, $user, $supportEmail, $appName);

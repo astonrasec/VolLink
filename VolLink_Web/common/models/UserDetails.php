@@ -87,6 +87,35 @@ class UserDetails extends ActiveRecord
     }
 
     /**
+     * Etiquetas em português dos tipos de conta (os valores guardados ficam em inglês).
+     *
+     * @return array<string, string>
+     */
+    public static function typeLabels(): array
+    {
+        return [
+            self::TYPE_VOLUNTEER => 'Voluntário',
+            self::TYPE_COMPANY => 'Empresa',
+            self::TYPE_ADMIN => 'Administrador',
+        ];
+    }
+
+    /**
+     * Etiquetas em português dos estados da conta (os valores guardados ficam em inglês).
+     *
+     * @return array<string, string>
+     */
+    public static function statusLabels(): array
+    {
+        return [
+            self::STATUS_PENDING => 'Pendente',
+            self::STATUS_APPROVED => 'Aprovada',
+            self::STATUS_REJECTED => 'Rejeitada',
+            self::STATUS_SUSPENDED => 'Suspensa',
+        ];
+    }
+
+    /**
      * Utilizador a que este perfil pertence.
      */
     public function getUser(): ActiveQuery
