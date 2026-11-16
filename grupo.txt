@@ -1,0 +1,7 @@
+Grupo: PL1
+Projeto: VolLink
+Unidade curricular: Plataformas de Sistemas de Informação (TeSP PSI, 2026/2027)
+
+Elementos:
+- Diogo Gomes Almeida - 2024153720
+- Pedro Kaleb de Jesus - 2241550
