@@ -30,6 +30,11 @@ AppAsset::register($this);
     <div class="content-wrapper">
         <section class="content">
             <div class="container-fluid vl-content">
+                <?php foreach (Yii::$app->session->getAllFlashes() as $type => $message): ?>
+                    <div class="alert alert-<?= $type === 'error' ? 'danger' : Html::encode($type) ?>">
+                        <?= Html::encode($message) ?>
+                    </div>
+                <?php endforeach ?>
                 <?= $content ?>
             </div>
         </section>

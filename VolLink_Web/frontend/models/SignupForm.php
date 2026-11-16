@@ -113,6 +113,12 @@ class SignupForm extends Model
             return null;
         }
 
+        $auth = Yii::$app->authManager;
+        $role = $auth->getRole($this->isCompany() ? 'empresa' : 'voluntario');
+        if ($role !== null) {
+            $auth->assign($role, $user->id);
+        }
+
         return $this->sendEmail($mailer, $user, $supportEmail, $appName);
     }
 

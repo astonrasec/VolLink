@@ -24,6 +24,7 @@ use yii\web\IdentityInterface;
  * @property int $status
  * @property int $created_at
  * @property int $updated_at
+ * @property int|null $deleted_at
  * @property string $password write-only password
  * @property-read UserDetails|null $details
  * @property-read Event[] $createdEvents
@@ -63,6 +64,16 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
         ];
+    }
+
+    /**
+     * Soft delete: guarda só a data de eliminação.
+     */
+    public function softDelete(): bool
+    {
+        $this->deleted_at = time();
+
+        return $this->save(false, ['deleted_at']);
     }
 
     /**
@@ -138,7 +149,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id): User|null
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE, 'deleted_at' => null]);
     }
 
     /**
@@ -157,7 +168,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername(string $username): User|null
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE, 'deleted_at' => null]);
     }
 
     /**
@@ -169,7 +180,7 @@ class User extends ActiveRecord implements IdentityInterface
     public static function findByLogin(string $login): User|null
     {
         $user = static::find()
-            ->where(['status' => self::STATUS_ACTIVE])
+            ->where(['status' => self::STATUS_ACTIVE, 'deleted_at' => null])
             ->andWhere(['or', ['username' => $login], ['email' => $login]])
             ->one();
 
@@ -191,6 +202,7 @@ class User extends ActiveRecord implements IdentityInterface
         return static::findOne([
             'password_reset_token' => $token,
             'status' => self::STATUS_ACTIVE,
+            'deleted_at' => null,
         ]);
     }
 

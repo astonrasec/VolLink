@@ -20,6 +20,7 @@ final class SignupFormTest extends Unit
     {
         // user_details não tem fixture própria; limpar entre testes.
         UserDetails::deleteAll();
+        Yii::$app->db->createCommand()->delete('{{%auth_assignment}}')->execute();
 
         $this->tester->haveFixtures(
             [

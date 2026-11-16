@@ -120,6 +120,24 @@ php yii cache/flush-all
 
 Os passos completos, incluindo a configuração do Apache e da API, estão na [documentação](Docs/src/instalacao.md).
 
+### Base de dados e credenciais
+
+O ficheiro [`database/vollink.sql`](database/vollink.sql) cria a base de dados `vollink_db` com as tabelas, as permissões RBAC e três contas de exemplo. Para o usar em vez das migrações:
+
+```powershell
+mysql -u root < database/vollink.sql
+```
+
+O ficheiro apaga e recria as tabelas (`DROP TABLE IF EXISTS`): importa-o só numa base nova ou quando podes perder os dados que lá estão.
+
+| Perfil | Utilizador | Palavra-passe | Onde entra |
+|---|---|---|---|
+| Administrador (`sysAdmin`) | `admin` | `Admin#2026` | Back-office |
+| Voluntário | `voluntario` | `Voluntario#2026` | Front-office |
+| Empresa | `empresa` | `Empresa#2026` | Front-office |
+
+Só o administrador tem acesso ao back-office. Os outros perfis recebem acesso negado.
+
 ## Estrutura
 
 ```text
