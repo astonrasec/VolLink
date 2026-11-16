@@ -262,12 +262,17 @@ class SiteController extends Controller
         );
 
         if ($signed) {
-            Yii::$app->session->setFlash(
-                'success',
-                $model->isCompany()
+            $verify = Yii::$app->params['user.requireEmailVerification'];
+            if ($model->isCompany()) {
+                $message = $verify
                     ? 'Conta de empresa criada. Confirma o email e aguarda a validação do SysAdmin.'
-                    : 'Thank you for registration. Please check your inbox for verification email.',
-            );
+                    : 'Conta de empresa criada. Aguarda a validação do SysAdmin.';
+            } else {
+                $message = $verify
+                    ? 'Thank you for registration. Please check your inbox for verification email.'
+                    : 'Conta criada. Já podes entrar.';
+            }
+            Yii::$app->session->setFlash('success', $message);
             return $this->goHome();
         }
 

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 return [
     'id' => 'app-frontend-tests',
+    'params' => [
+        'user.requireEmailVerification' => true,
+    ],
     'components' => [
         'assetManager' => [
             'basePath' => __DIR__ . '/../web/assets',

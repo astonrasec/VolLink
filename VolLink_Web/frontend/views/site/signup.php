@@ -80,10 +80,7 @@ $accountField = Html::getInputName($model, 'accountType');
 </div>
 
 <div data-account-fields="volunteer"<?= $isCompany ? ' hidden' : '' ?>>
-    <div class="field">
-        <label for="birth-date">Data de nascimento</label>
-        <input id="birth-date" class="input" type="date" name="birth_date">
-    </div>
+    <?= $form->field($model, 'birthDate')->input('date')->label('Data de nascimento') ?>
 </div>
 
 <label class="check field">

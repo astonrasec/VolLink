@@ -9,4 +9,6 @@ return [
     'senderName' => 'Example.com mailer',
     'user.passwordResetTokenExpire' => 3600,
     'user.passwordMinLength' => 8,
+    // false: a conta fica ativa logo no registo, sem confirmar o email (fase de testes).
+    'user.requireEmailVerification' => false,
 ];
